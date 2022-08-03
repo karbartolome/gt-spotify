@@ -62,7 +62,7 @@ tabla_user <- get_my_top_artists_or_tracks(
 ```
 
 ```{r, eval=FALSE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_final, 'tabla_user.png', 
+gt::gtsave(tabla_user, 'tabla_user.png', 
            vwidth = 2000, vheight = 3000)
 ```
 
@@ -101,13 +101,13 @@ tracks_features <- get_artist_audio_features(artist = ARTISTA) %>%
 
 Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
-```{r}
+```{r, eval=FALSE}
 tabla_tracks <- tracks_features %>% 
   head() %>% gt()
 ```
 
 ```{r, eval=FALSE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_final, 'tabla_tracks.png', 
+gt::gtsave(tabla_tracks, 'tabla_tracks.png', 
            vwidth = 2000, vheight = 3000)
 ```
 
@@ -163,7 +163,7 @@ tabla_album <- tabla %>%
 ```
 
 ```{r}
-tabla_album %>%  
+tabla_album_2 <- tabla_album %>%  
 
   head() %>% 
   
@@ -180,6 +180,16 @@ tabla_album %>%
   
 
   fmt_number(columns=where(is.numeric))
+```
+
+
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_final, 'tabla_album_2.png', 
+           vwidth = 2000, vheight = 3000)
+```
+
+```{r}
+knitr::include_graphics('tabla_album_2.png')
 ```
 
 # Tendencias
