@@ -1,12 +1,19 @@
 ---
-title: "Untitled"
-author: "Karina Bartolomé"
+title: "Tablas GT y Spotify"
+author: "RLadies BA"
 date: '2022-07-30'
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
-options(scipen = 999)
+knitr::opts_chunk$set(echo = TRUE, 
+                      eval = TRUE,
+                      warning = FALSE, 
+                      message = FALSE, 
+                      code_folding=TRUE,
+                      align='center')
+
+options(scipen=999)
 ```
 
 
@@ -44,8 +51,8 @@ access_token <- get_spotify_access_token()
 
 Se puede acceder a los datos personales de artistas más escuchados:
 
-```{r}
-get_my_top_artists_or_tracks(
+```{r, eval=FALSE}
+tabla_user <- get_my_top_artists_or_tracks(
     type = 'artists', time_range = 'short_term', limit = 10) %>%
   select(name, genres) %>%
   rowwise() %>%
@@ -53,6 +60,16 @@ get_my_top_artists_or_tracks(
   ungroup %>%
   gt()
 ```
+
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_final, 'tabla_user.png', 
+           vwidth = 2000, vheight = 3000)
+```
+
+```{r}
+knitr::include_graphics('tabla_user.png')
+```
+
 
 # Caso: análisis de un artista particular
 
@@ -85,8 +102,17 @@ tracks_features <- get_artist_audio_features(artist = ARTISTA) %>%
 Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
 ```{r}
-tracks_features %>% 
+tabla_tracks <- tracks_features %>% 
   head() %>% gt()
+```
+
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_final, 'tabla_tracks.png', 
+           vwidth = 2000, vheight = 3000)
+```
+
+```{r}
+knitr::include_graphics('tabla_tracks.png')
 ```
 
 Agregando los datos a nivel de cada álbum:
@@ -102,11 +128,21 @@ tabla <- tracks_features %>%
 ```
 
 ```{r}
-tabla %>% 
+tabla_albums <- tabla %>% 
   select(-album_images) %>% 
   head() %>% gt() %>% 
   fmt_number(columns=where(is.numeric))
 ```
+
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_final, 'tabla_albums.png', 
+           vwidth = 2000, vheight = 3000)
+```
+
+```{r}
+knitr::include_graphics('tabla_albums.png')
+```
+
 
 Se quiere añadir la imagen del álbum
 
