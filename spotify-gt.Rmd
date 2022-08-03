@@ -184,7 +184,7 @@ tabla_album_2 <- tabla_album %>%
 
 
 ```{r, eval=FALSE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_final, 'tabla_album_2.png', 
+gt::gtsave(tabla_album_2, 'tabla_album_2.png', 
            vwidth = 2000, vheight = 3000)
 ```
 
