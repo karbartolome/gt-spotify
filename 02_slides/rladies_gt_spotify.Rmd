@@ -1,0 +1,228 @@
+---
+title: "Introducción a tablas gt mediante el uso de datos de Spotify"
+subtitle: "︿<br/>R-Ladies Buenos Aires"
+authors: "Andrea Gomez & Karina Bartolomé"
+output:
+  xaringan::moon_reader:
+    css: ["default", "rladies", "rladies-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation: 
+        scroll: false
+    includes:
+      in_header: header.html
+      after_body: "collapseoutput.js"
+---
+
+# ¿Quiénes somos?
+
+.pull-left[
+
+<br>
+
+```{r, out.width='50%', fig.align='center', echo=FALSE}
+#knitr::include_graphics('images/imagen.jpg')
+```
+]
+
+.pull-right[
+### Andrea Gomez
+- Sociologa
+]
+
+
+
+.pull-left[
+
+<br>
+
+```{r, out.width='50%', fig.align='center', echo=FALSE}
+#knitr::include_graphics('images/imagen.jpg')
+```
+]
+
+.pull-right[
+### Karina Bartolomé
+- Economista
+]
+
+---
+
+background-position: 50% 50%
+class: center, inverse
+
+
+# Configuraciones iniciales
+
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = NA)
+
+options(scipen=999)
+options(reticulate.repl.quiet = TRUE)
+options(servr.daemon = TRUE) # para infinite moon reader
+gtsummary::theme_gtsummary_language('es')
+
+modo_notdebug=TRUE
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+```{r xaringan-logo, echo=FALSE}
+xaringanExtra::use_logo(
+  image_url = 'images/github.png', 
+  link_url  = 'https://github.com/karbartolome/rladies_charlas/tree/main/01_r_python', 
+  width     = '30px', 
+  height    = '30px'
+)
+```
+
+```{css, echo=FALSE}
+/* Table width = 100% max-width */
+.remark-slide table{
+    width: 100%;
+}
+
+/* background-color blanco siempre */
+.remark-slide thead, .remark-slide tr:nth-child(2n) {
+    background-color: white;
+}
+
+/* Incremento en transparencia del color de highlight del código ya que lo uso mucho y así se lee mejor */
+.remark-code-line-highlighted { 
+    background-color: rgba(136, 57, 138, 0.1);
+}
+```
+
+```{r, echo=FALSE}
+image_link <- function(image,url,...){
+  htmltools::a(
+    href=url,
+    htmltools::img(src=image,...)
+    )
+}
+```
+
+
+---
+
+# ¿Qué vamos a ver hoy?
+
+--
+
+- API de Spotify
+
+--
+
+- Introducción a The Grammar of Tables (gt)
+
+--
+
+- Tabla con datos de Spotify
+
+
+---
+
+class: center, middle
+
+# API de Spotify
+
+---
+
+# Qué es una API
+
+Descripción breve
+
+
+
+---
+
+# Credenciales
+
+Cómo obtener las credenciales de Spotify para seguir el taller
+
+
+---
+
+# Consulta simple a la API 
+
+Consulta de los 10 artístas más escuchadods en el corto plazo
+
+
+---
+
+class: center, middle
+
+# Introducción a gt
+
+
+---
+
+Acá me imagino armar un ejemplo bien simple onda un df de 5 filas, convertirlo a gt, y 2 o 3 capas gt
+
+---
+
+class: center, middle
+
+# Tablas con datos de Spotify
+
+---
+
+# Tabla simple
+
+Texto y cosas
+
+---
+
+# Se van añadiendo cosas
+
+Texto y cosas
+
+---
+
+class: center, middle
+
+# Comentarios finales
+
+---
+
+# Cosas que queremos que se lleven de este workshop
+
+--
+
+- 
+
+
+---
+
+# Links utiles
+
+- 🔗 [Link 1](https://google.com.ar/)
+
+---
+
+class: inverse, center, middle
+
+# Contacto
+
+
+<a href="https://karbartolome-blog.netlify.com"><i class="fa fa-link fa-fw"></i>&nbsp; karbartolome-blog.netlify.com</a><br>
+<a href="http://twitter.com/karbartolome"><i class="fa fa-twitter fa-fw"></i>&nbsp; @karbartolome</a><br>
+<a href="http://github.com/karbartolome"><i class="fa fa-github fa-fw"></i>&nbsp; @karbartolome</a><br>
+
+---
+
+
+class: center, middle
+
+# Muchas gracias!!
+
+Las slides fueron creadas con el paquete [**xaringan**](https://github.com/yihui/xaringan), utilizando el template de Rladies
+
+
+
