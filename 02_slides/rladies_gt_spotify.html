@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Introducción a tablas gt mediante el uso de datos de Spotify</title>
+    <title>Creando tablas en {gt} con Spotify API &amp; Bad Bunny</title>
     <meta charset="utf-8" />
     <meta name="author" content="Andrea Gómez Vargas &amp; Karina Bartolomé" />
+    <meta name="date" content="2022-10-24" />
     <script src="rladies_gt_spotify_files/header-attrs-2.17/header-attrs.js"></script>
     <link href="rladies_gt_spotify_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="rladies_gt_spotify_files/remark-css-0.0.1/rladies.css" rel="stylesheet" />
@@ -17,7 +18,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Introducción a tablas gt mediante el uso de datos de Spotify
+# Creando tablas en {gt} con Spotify API &amp; Bad Bunny
 ]
 .subtitle[
 ## ︿<br/>R-Ladies Buenos Aires
@@ -26,7 +27,7 @@ class: center, middle, inverse, title-slide
 ### Andrea Gómez Vargas &amp; Karina Bartolomé
 ]
 .date[
-### 2022/11/16
+### 2022-10-24
 ]
 
 ---
@@ -66,10 +67,29 @@ class: center, middle, inverse, title-slide
 ---
 
 background-position: 50% 50%
-class: center, inverse
+class: center, inverse, middle
 
 
-# Configuraciones iniciales
+# Arrancando
+
+---
+
+## Qué se necesita para este taller?
+
+- Ganas de hacer tablas
+
+- Una cuenta en Spotify 
+  
+- R &amp; RStudio instalados, con los siguientes paquetes:
+
+
+```r
+library(tidyverse) # Manipulación de datos
+library(gt)        # Tablas gt: grammar of tables
+library(gtExtras)  # Extras de tablas gt
+library(spotifyr)  # API de spotify
+library(rjson)     # Leer jsons de credenciales
+```
 
 ---
 
@@ -164,6 +184,12 @@ Descripción breve
 
 ---
 
+## API de Spotify
+
+- Qué variables
+
+---
+
 # Credenciales
 
 Cómo obtener las credenciales de Spotify para seguir el taller
@@ -185,13 +211,26 @@ class: center, middle
 
 ---
 
+IMAGEN GT GRAMMAR OF TABLES
+
+---
+
 Acá me imagino armar un ejemplo bien simple onda un df de 5 filas, convertirlo a gt, y 2 o 3 capas gt
+
+-- EJEMPLO CON EL DF GENERADO EN EL EJEMPLO DE CONSULTA A API SPOTIFY
+
+
 
 ---
 
 class: center, middle
 
-# Tablas con datos de Spotify
+# Bad Bunny
+
+---
+
+RMD
+
 
 ---
 
@@ -215,6 +254,11 @@ class: center, middle
 
 # Cosas que queremos que se lleven de este workshop
 
+&lt;img src="https://acegif.com/wp-content/uploads/gifs/spongebob-rainbow-1.gif" width="20%" style="display: block; margin: auto;" /&gt;
+
+
+- Las tablas también son una forma de visualización de datos
+
 --
 
 - 
@@ -222,7 +266,7 @@ class: center, middle
 
 ---
 
-# Comparte tu tabla en twitter 
+# Comparte tu tabla en redes sociales 
 
 ---
 

@@ -30,6 +30,9 @@ library(gtrendsR)  # Google trends API
 library("rjson")
 ```
 
+
+
+
 Se configura el token para conexión a la API de Spotify. El siguiente chunk buscará las variables de entorno:
 
 -   SPOTIFY_CLIENT_ID
