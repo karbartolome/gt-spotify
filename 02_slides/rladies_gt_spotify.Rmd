@@ -1,7 +1,8 @@
 ---
 title: "Introducción a tablas gt mediante el uso de datos de Spotify"
 subtitle: "︿<br/>R-Ladies Buenos Aires"
-authors: "Andrea Gomez & Karina Bartolomé"
+author: "Andrea Gómez Vargas & Karina Bartolomé"
+date: "2022/11/16"
 output:
   xaringan::moon_reader:
     css: ["default", "rladies", "rladies-fonts"]
@@ -11,6 +12,7 @@ output:
       countIncrementalSlides: false
       navigation: 
         scroll: false
+      ratio: '16:9'
     includes:
       in_header: header.html
       after_body: "collapseoutput.js"
@@ -20,18 +22,22 @@ output:
 
 .pull-left[
 
-<br>
-
-```{r, out.width='50%', fig.align='center', echo=FALSE}
-#knitr::include_graphics('images/imagen.jpg')
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/imagen1.PNG')
 ```
 ]
 
 .pull-right[
-### Andrea Gomez
-- Sociologa
-]
+### Andrea Gómez Vargas
+- Socióloga
+- Data Analyst en INDEC
+- Fan de Bad Bunny 
 
+### Karina Bartolomé
+- Economista
+- Data Scientist en Ualá 
+- Fan de {gt}
+]
 
 
 .pull-left[
@@ -44,8 +50,7 @@ output:
 ]
 
 .pull-right[
-### Karina Bartolomé
-- Economista
+
 ]
 
 ---
@@ -200,6 +205,10 @@ class: center, middle
 
 ---
 
+# Comparte tu tabla en twitter 
+
+---
+
 # Links utiles
 
 - 🔗 [Link 1](https://google.com.ar/)
@@ -214,6 +223,10 @@ class: inverse, center, middle
 <a href="https://karbartolome-blog.netlify.com"><i class="fa fa-link fa-fw"></i>&nbsp; karbartolome-blog.netlify.com</a><br>
 <a href="http://twitter.com/karbartolome"><i class="fa fa-twitter fa-fw"></i>&nbsp; @karbartolome</a><br>
 <a href="http://github.com/karbartolome"><i class="fa fa-github fa-fw"></i>&nbsp; @karbartolome</a><br>
+
+<a href="https://soyandrea.netlify.app"><i class="fa fa-link fa-fw"></i>&nbsp; Soyandrea.netlify.app</a><br>
+<a href="http://twitter.com/me_andre"><i class="fa fa-twitter fa-fw"></i>&nbsp; @me_andre</a><br>
+<a href="http://github.com/SoyAndrea"><i class="fa fa-github fa-fw"></i>&nbsp; @SoyAndrea</a><br>
 
 ---
 
