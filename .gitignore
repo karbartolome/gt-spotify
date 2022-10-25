@@ -41,3 +41,8 @@ vignettes/*.pdf
 
 # Credenciales
 credentials.json
+
+# exploratorio
+spotify-gt draft.Rmd
+
+exploratorio AGV/

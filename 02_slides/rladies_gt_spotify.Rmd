@@ -39,27 +39,13 @@ knitr::include_graphics('images/imagen1.PNG')
 - Fan de {gt}
 ]
 
-
-.pull-left[
-
-<br>
-
-```{r, out.width='50%', fig.align='center', echo=FALSE}
-#knitr::include_graphics('images/imagen.jpg')
-```
-]
-
-.pull-right[
-
-]
-
 ---
 
 background-position: 50% 50%
-class: center, inverse, middle
+class: center, inverse, middle, big-font
 
 
-# Arrancando
+# Arrancando 🚀
 
 ---
 
@@ -120,6 +106,21 @@ xaringanExtra::use_logo(
 .remark-code-line-highlighted { 
     background-color: rgba(136, 57, 138, 0.1);
 }
+
+/* Big font size */
+.big-font h1 {
+  font-size: 100pt;
+}
+/* Tamaño letra contenido */
+.remark-slide-content {
+  font-size: 24pt;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+  color: #562457;
+}
+
 ```
 
 ```{r, echo=FALSE}
@@ -133,8 +134,9 @@ image_link <- function(image,url,...){
 
 
 ---
+class: center, middle
 
-# ¿Qué vamos a ver hoy?
+## ¿Qué vamos a ver hoy?
 
 --
 
@@ -157,7 +159,7 @@ class: center, middle
 
 ---
 
-# Qué es una API
+## Qué es una API
 
 Descripción breve
 
@@ -171,23 +173,23 @@ Descripción breve
 
 ---
 
-# Credenciales
+## Credenciales
 
 Cómo obtener las credenciales de Spotify para seguir el taller
 
 
 ---
 
-# Consulta simple a la API 
+## Consulta simple a la API 
 
 Consulta de los 10 artístas más escuchadods en el corto plazo
 
 
 ---
 
-class: center, middle
+class: center, middle,big-font
 
-# Introducción a gt
+# Introducción a {gt}
 
 
 ---
@@ -204,9 +206,9 @@ Acá me imagino armar un ejemplo bien simple onda un df de 5 filas, convertirlo 
 
 ---
 
-class: center, middle
+class: center, middle, big-font
 
-# Bad Bunny
+# Bad Bunny 🐰
 
 ---
 
