@@ -33,54 +33,6 @@ class: center, middle, inverse, title-slide
 ---
 
 
-# ¿Quiénes somos?
-
-.pull-left[
-
-&lt;img src="images/imagen1.PNG" width="70%" style="display: block; margin: auto;" /&gt;
-]
-
-.pull-right[
-### Andrea Gómez Vargas
-- Socióloga
-- Data Analyst en INDEC
-- Fan de Bad Bunny 
-
-### Karina Bartolomé
-- Economista
-- Data Scientist en Ualá 
-- Fan de {gt}
-]
-
----
-
-background-position: 50% 50%
-class: center, inverse, middle, big-font
-
-
-# Arrancando 🚀
-
----
-
-## Qué se necesita para este taller?
-
-- Ganas de hacer tablas
-
-- Una cuenta en Spotify 
-  
-- R &amp; RStudio instalados, con los siguientes paquetes:
-
-
-```r
-library(tidyverse) # Manipulación de datos
-library(gt)        # Tablas gt: grammar of tables
-library(gtExtras)  # Extras de tablas gt
-library(spotifyr)  # API de spotify
-library(rjson)     # Leer jsons de credenciales
-```
-
----
-
 
 
 
@@ -153,44 +105,144 @@ h1, h2, h3 {
 
 
 
+# ¿Quiénes somos?
+
+.pull-left[
+
+&lt;img src="images/imagen1.PNG" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+### Andrea Gómez Vargas
+- Socióloga
+- Data Analyst en INDEC
+- Fan de Bad Bunny 
+
+### Karina Bartolomé
+- Economista
+- Data Scientist en Ualá 
+- Fan de {gt}
+]
 
 ---
-class: center, middle
+
+class: center, middle, inverse
+
+Antes de arrancar
+
+&lt;img src="https://thepcosbible-com.exactdn.com/wp-content/uploads/2020/06/giphy-7.gif?strip=all&amp;lossy=1&amp;quality=80&amp;resize=514%2C288&amp;ssl=1" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: left, middle
+## Qué se necesita para este taller?
+
+--
+
+- Ganas de hacer tablas 
+
+--
+
+- Una cuenta en &lt;a&gt;&lt;i class="fa fa-spotify fa-fw"&gt;&lt;/i&gt; Spotify&lt;/a&gt;
+
+--
+  
+- &lt;a&gt;&lt;i class="fa fa-registered fa-fw"&gt;&lt;/i&gt;&lt;/a&gt; y RStudio instalados, con los siguientes paquetes:
+
+
+```r
+library(tidyverse) # Manipulación de datos
+library(gt)        # Tablas gt: grammar of tables
+library(gtExtras)  # Extras de tablas gt
+library(spotifyr)  # API de spotify
+library(rjson)     # Leer jsons de credenciales
+```
+
+---
+
+background-position: 50% 50%
+class: center, inverse, middle, big-font
+
+
+# Ahora sí 🚀
+
+---
+class: left, middle
 
 ## ¿Qué vamos a ver hoy?
 
 --
 
-- API de Spotify
+🔸 API de Spotify
 
---
 
-- Introducción a The Grammar of Tables (gt)
+🔸 Introducción a The Grammar of Tables (gt)
 
---
 
-- Tabla con datos de Spotify
-
+🔸 Tabla con datos de Spotify
 
 ---
 
-class: center, middle
+class: center, middle, inverse
 
 # API de Spotify
 
 ---
 
-## Qué es una API
+##  ¿Qué es una API?
 
-Descripción breve
+--
+
+Las API son mecanismos que `permiten a dos componentes de software comunicarse entre sí` mediante un conjunto de definiciones y protocolos. 
+
+--
+
+.pull-left[
+
+&lt;img src="images/apis_meme.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
 
 
+&lt;a href="https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api"&gt;&lt;i class="fa fa-twitter fa-fw"&gt;&lt;/i&gt;&amp;nbsp; API de Twitter&lt;/a&gt;&lt;br&gt;
+
+
+&lt;a href="https://www.argentina.gob.ar/onti/software-publico/catalogo/apis"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&amp;nbsp; APIS Argentina&lt;/a&gt;&lt;br&gt;
+
+Etc. 
+
+
+]
 
 ---
 
-## API de Spotify
 
-- Qué variables
+## &lt;a href="https://developer.spotify.com/documentation/web-api/"&gt;&lt;i class="fa fa-spotify"&gt;&lt;/i&gt;&amp;nbsp; API de Spotify&lt;/a&gt;&lt;br&gt;
+
+--
+
+Datos que se pueden obtener a partir de esta API:
+
+--
+
+🔸  Datos sobre artistas
+
+--
+
+🔸 Datos sobre álbumes
+
+--
+
+🔸 Datos sobre el usuario
+
+--
+
+🔸 Etc.
+
+--
+
+Para más información, visitar la &lt;a href="https://developer.spotify.com/documentation/web-api/reference/#/"&gt;documentación  de la API de Spotify&lt;/a&gt;&lt;br&gt;
 
 ---
 

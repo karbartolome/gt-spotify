@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = TRUE,
 options(scipen=999)
 ```
 
-
 # Librerías
 
 Se definen los paquetes :package: a utilizar:
@@ -29,9 +28,6 @@ library(spotifyr)  # API de spotify
 library(gtrendsR)  # Google trends API
 library("rjson")
 ```
-
-
-
 
 Se configura el token para conexión a la API de Spotify. El siguiente chunk buscará las variables de entorno:
 
@@ -56,7 +52,9 @@ Se puede acceder a los datos personales de artistas más escuchados:
 
 ```{r, eval=FALSE}
 tabla_user <- get_my_top_artists_or_tracks(
-    type = 'artists', time_range = 'short_term', limit = 10) %>%
+    type = 'artists', 
+    time_range = 'long_term', #'short_term', # 'medium_term', 'long_term' 
+    limit = 20) %>%
   select(name, genres) %>%
   rowwise() %>%
   mutate(genres = paste(genres, collapse = ', ')) %>%
@@ -72,7 +70,6 @@ gt::gtsave(tabla_user, 'tabla_user.png',
 ```{r}
 knitr::include_graphics('tabla_user.png')
 ```
-
 
 # Caso: análisis de un artista particular
 
@@ -146,7 +143,6 @@ gt::gtsave(tabla_albums, 'tabla_albums.png',
 knitr::include_graphics('tabla_albums.png')
 ```
 
-
 Se quiere añadir la imagen del álbum
 
 ```{r}
@@ -184,7 +180,6 @@ tabla_album_2 <- tabla_album %>%
 
   fmt_number(columns=where(is.numeric))
 ```
-
 
 ```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_album_2, 'tabla_album_2.png', 
@@ -342,11 +337,3 @@ gt::gtsave(tabla_final, 'tabla_final.png',
 ```{r}
 knitr::include_graphics('tabla_final.png')
 ```
-
-
-
-
-
-
-
-

@@ -18,55 +18,6 @@ output:
       after_body: "collapseoutput.js"
 ---
 
-# ¿Quiénes somos?
-
-.pull-left[
-
-```{r, out.width='70%', fig.align='center', echo=FALSE}
-knitr::include_graphics('images/imagen1.PNG')
-```
-]
-
-.pull-right[
-### Andrea Gómez Vargas
-- Socióloga
-- Data Analyst en INDEC
-- Fan de Bad Bunny 
-
-### Karina Bartolomé
-- Economista
-- Data Scientist en Ualá 
-- Fan de {gt}
-]
-
----
-
-background-position: 50% 50%
-class: center, inverse, middle, big-font
-
-
-# Arrancando 🚀
-
----
-
-## Qué se necesita para este taller?
-
-- Ganas de hacer tablas
-
-- Una cuenta en Spotify 
-  
-- R & RStudio instalados, con los siguientes paquetes:
-
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
-library(tidyverse) # Manipulación de datos
-library(gt)        # Tablas gt: grammar of tables
-library(gtExtras)  # Extras de tablas gt
-library(spotifyr)  # API de spotify
-library(rjson)     # Leer jsons de credenciales
-```
-
----
-
 ```{r include=FALSE}
 knitr::opts_chunk$set(comment = NA)
 
@@ -74,8 +25,6 @@ options(scipen=999)
 options(reticulate.repl.quiet = TRUE)
 options(servr.daemon = TRUE) # para infinite moon reader
 gtsummary::theme_gtsummary_language('es')
-
-modo_notdebug=TRUE
 ```
 
 ```{r xaringan-panelset, echo=FALSE}
@@ -132,44 +81,149 @@ image_link <- function(image,url,...){
 }
 ```
 
+# ¿Quiénes somos?
+
+.pull-left[
+
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/imagen1.PNG')
+```
+]
+
+.pull-right[
+### Andrea Gómez Vargas
+- Socióloga
+- Data Analyst en INDEC
+- Fan de Bad Bunny 
+
+### Karina Bartolomé
+- Economista
+- Data Scientist en Ualá 
+- Fan de {gt}
+]
 
 ---
-class: center, middle
+
+class: center, middle, inverse
+
+Antes de arrancar
+
+```{r, out.width='50%', fig.align='center', echo=FALSE}
+knitr::include_graphics('https://thepcosbible-com.exactdn.com/wp-content/uploads/2020/06/giphy-7.gif?strip=all&lossy=1&quality=80&resize=514%2C288&ssl=1')
+```
+
+---
+class: left, middle
+## Qué se necesita para este taller?
+
+--
+
+- Ganas de hacer tablas 
+
+--
+
+- Una cuenta en <a><i class="fa fa-spotify fa-fw"></i> Spotify</a>
+
+--
+  
+- <a><i class="fa fa-registered fa-fw"></i></a> y RStudio instalados, con los siguientes paquetes:
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse) # Manipulación de datos
+library(gt)        # Tablas gt: grammar of tables
+library(gtExtras)  # Extras de tablas gt
+library(spotifyr)  # API de spotify
+library(rjson)     # Leer jsons de credenciales
+```
+
+---
+
+background-position: 50% 50%
+class: center, inverse, middle, big-font
+
+
+# Ahora sí 🚀
+
+---
+class: left, middle
 
 ## ¿Qué vamos a ver hoy?
 
 --
 
-- API de Spotify
+🔸 API de Spotify
 
---
 
-- Introducción a The Grammar of Tables (gt)
+🔸 Introducción a The Grammar of Tables (gt)
 
---
 
-- Tabla con datos de Spotify
-
+🔸 Tabla con datos de Spotify
 
 ---
 
-class: center, middle
+class: center, middle, inverse
 
 # API de Spotify
 
 ---
 
-## Qué es una API
+##  ¿Qué es una API?
 
-Descripción breve
+--
+
+Las API son mecanismos que `permiten a dos componentes de software comunicarse entre sí` mediante un conjunto de definiciones y protocolos. 
+
+--
+
+.pull-left[
+
+```{r, echo=FALSE, out.width='70%', fig.align='center'}
+knitr::include_graphics('images/apis_meme.png')
+```
+
+]
+
+.pull-right[
 
 
+<a href="https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api"><i class="fa fa-twitter fa-fw"></i>&nbsp; API de Twitter</a><br>
+
+
+<a href="https://www.argentina.gob.ar/onti/software-publico/catalogo/apis"><i class="fa fa-globe"></i>&nbsp; APIS Argentina</a><br>
+
+Etc. 
+
+
+]
 
 ---
 
-## API de Spotify
 
-- Qué variables
+## <a href="https://developer.spotify.com/documentation/web-api/"><i class="fa fa-spotify"></i>&nbsp; API de Spotify</a><br>
+
+--
+
+Datos que se pueden obtener a partir de esta API:
+
+--
+
+🔸  Datos sobre artistas
+
+--
+
+🔸 Datos sobre álbumes
+
+--
+
+🔸 Datos sobre el usuario
+
+--
+
+🔸 Etc.
+
+--
+
+Para más información, visitar la <a href="https://developer.spotify.com/documentation/web-api/reference/#/">documentación  de la API de Spotify</a><br>
 
 ---
 
