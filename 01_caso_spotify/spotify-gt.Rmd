@@ -53,22 +53,13 @@ Se puede acceder a los datos personales de artistas más escuchados:
 ```{r, eval=FALSE}
 tabla_user <- get_my_top_artists_or_tracks(
     type = 'artists', 
-    time_range = 'long_term', #'short_term', # 'medium_term', 'long_term' 
-    limit = 20) %>%
+    time_range = 'short_term', #'short_term', # 'medium_term', 'long_term' 
+    limit = 10) %>%
   select(name, genres) %>%
   rowwise() %>%
   mutate(genres = paste(genres, collapse = ', ')) %>%
   ungroup %>%
   gt()
-```
-
-```{r, eval=FALSE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_user, 'tabla_user.png', 
-           vwidth = 2000, vheight = 3000)
-```
-
-```{r}
-knitr::include_graphics('tabla_user.png')
 ```
 
 # Caso: análisis de un artista particular
@@ -82,21 +73,37 @@ ARTISTA = 'bad bunny'
 Para este artista, se genera una búsqueda de variables:
 
 ```{r}
+
+vars_audio = c(
+    'danceability',
+    'energy',
+    'loudness',
+    # 'liveness'
+    # 'speechiness', 
+    'acousticness', 
+    'instrumentalness'
+    # 'valence', 
+    # 'tempo'       
+)
+
 tracks_features <- get_artist_audio_features(artist = ARTISTA) %>%
   select(
     artist_id,
     artist_name,
+    album_id,
     album_name,
     album_release_date,
     album_images,
     track_name,
-    danceability,
-    energy,
-    loudness,
-    acousticness,
-    instrumentalness,
-    liveness
-  ) 
+    available_markets,
+    duration_ms,
+    key_mode,
+    
+    # Variables vinculadas a la canción
+    all_of(vars_audio)       
+  ) %>% 
+  
+  arrange(desc(album_release_date))
 ```
 
 Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
@@ -119,10 +126,19 @@ Agregando los datos a nivel de cada álbum:
 
 ```{r}
 tabla <- tracks_features %>%
-  group_by(artist_name, album_name, album_images, album_release_date) %>%
-  summarise(across(
-      where(is.numeric),
-      ~ mean(.x))) %>% 
+  
+  group_by(
+    album_images, artist_name, album_id, album_name, album_release_date
+  ) %>%
+  
+  summarise(
+    # Duración del álbum: suma de duración de cada canción
+    duration_mins = sum(duration_ms/(1000*60)),
+    
+    # Lista de cada variable de audio
+    across(all_of(vars_audio), ~ list(.x)),
+  ) %>% 
+  
   ungroup()
 
 ```
@@ -162,11 +178,18 @@ tabla_album <- tabla %>%
 ```
 
 ```{r}
+color_spotify = "#1DB954"
+
 tabla_album_2 <- tabla_album %>%  
 
   head() %>% 
   
   gt() %>% 
+  
+  tab_header(
+    title = md(glue::glue('**{str_to_title(ARTISTA)}** en Spotify')),
+    subtitle = 'Álbumes más recientes'
+  ) %>% 
   
   text_transform(
     locations = cells_body(columns = c(album_images)),
@@ -175,10 +198,58 @@ tabla_album_2 <- tabla_album %>%
     }
   ) %>%
   
-  cols_label(album_images = '') %>% 
-  
+  gt_merge_stack(
+    col1 = album_name, 
+    col2 = artist_name) %>% 
 
-  fmt_number(columns=where(is.numeric))
+  fmt_number(columns=where(is.numeric)) %>% 
+  
+  gt_color_box(columns = duration_mins, 
+                palette=c('white', color_spotify), 
+                domain=c(0,max(tabla_album$duration_mins))) %>% 
+  
+  gt_plt_dist(
+    column = danceability, type = "density", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt_plt_dist(
+    column = energy, type = "density", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt_plt_dist(
+    column = loudness, type = "density", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt_plt_dist(
+    column = acousticness, type = "boxplot", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt::cols_hide(instrumentalness) %>% 
+  
+  gt::tab_spanner(label='Un tipo de variables', 
+                  columns=danceability:loudness) %>% 
+  gt::tab_spanner(label='Otro tipo de variables', 
+                  columns = c('acousticness','instrumentalness')) %>% 
+  
+  gt::tab_footnote(
+    locations=cells_column_labels('duration_mins'), 
+    footnote='Duraciòn en minutos = suma de la duración de cada una de las canciones que componen el álbum') %>% 
+  
+  gt::tab_source_note(source_note='Fuente: API de Spotify') %>% 
+  
+  cols_label(
+    album_images = '',
+    album_name = '',
+    album_release_date = 'Lanzamiento',
+    duration_mins = 'Duración',
+    danceability = 'Danceability 🕺',
+    energy = 'Energy',
+    loudness = 'Loudness',
+    acousticness = 'Acousticness',
+    instrumentalness = 'Instrumentalness'
+  ) 
+
+tabla_album_2
 ```
 
 ```{r, eval=FALSE, echo=FALSE, layout='l-page'}
@@ -189,6 +260,194 @@ gt::gtsave(tabla_album_2, 'tabla_album_2.png',
 ```{r}
 knitr::include_graphics('tabla_album_2.png')
 ```
+
+
+```{r}
+my_theme <- function(gt_object, ...){
+  gt_object %>%
+    tab_options(
+      column_labels.background.color = "#39423c",
+      footnotes.background.color = "#39423c",
+      source_notes.background.color = "#39423c",
+      heading.background.color = "#39423c",
+      heading.align = "left",
+      ...
+    ) %>%
+    tab_style(
+      style = cell_text(color = color_spotify, size = px(32)),
+      locations = cells_title("title")
+    )
+}
+
+tabla_album_2 %>% 
+    my_theme()
+```
+
+
+
+
+
+
+
+
+# Caso con boxplot
+
+```{r}
+is_outlier <- function(x) {
+  # outliers <- x < quantile(x, 0.25) - 1.5 * IQR(x) | 
+  #             x > quantile(x, 0.75) + 1.5 * IQR(x)
+  
+  outliers <- x == max(x)
+  return(outliers)
+}
+
+
+gen_outliers_plots<- function(.df, .variable, .font_size=22){
+  .df %>% 
+    select(all_of(c('track_name',.variable))) %>% 
+    pivot_longer(cols=-track_name) %>% 
+    mutate(is_outlier=ifelse(is_outlier(value), track_name, NA)) %>% 
+    ggplot(aes(y=value, x=name)) + 
+      geom_boxplot(
+        fill=color_spotify, width=0.2, lwd=3, outlier.size=5
+      ) + 
+      ggrepel::geom_text_repel(
+        aes(label=is_outlier), 
+        na.rm=TRUE, 
+        nudge_x=0.4, 
+        #position = position_nudge(x = +0.2),
+        size=.font_size)+
+      coord_flip()+
+      theme_void()
+}
+
+gen_outliers_plots(
+  .df=tracks_features %>% filter(album_id=='50Zz8CkIhATKUlQMbHO3k1'), 
+  .variable='instrumentalness', .font_size=10)
+```
+
+
+```{r}
+
+tabla_plots <- tabla_album %>% 
+  mutate(instrumentalness=map(
+    album_id, ~gen_outliers_plots(
+      .df=tracks_features %>% filter(album_id==.x), 
+      .variable='instrumentalness'
+    )
+  ))
+
+tabla_album %>%  
+
+  head() %>% 
+  
+  gt() %>% 
+  
+  tab_header(
+    title = md(glue::glue('**{str_to_title(ARTISTA)}** en Spotify')),
+    subtitle = 'Álbumes más recientes'
+  ) %>% 
+  
+  text_transform(
+    locations = cells_body(columns = c(album_images)),
+    fn = function(album_images) {
+      lapply(album_images, web_image, height = 50)
+    }
+  ) %>%
+  
+  gt_merge_stack(
+    col1 = album_name, 
+    col2 = artist_name) %>% 
+  
+  tab_style(
+    style = list(cell_text(weight = "bold", color='red')),
+    locations = cells_body(
+      columns = album_release_date,
+      rows = album_release_date >= '2022-01-01'
+    )
+  ) %>%
+
+  fmt_number(columns=where(is.numeric)) %>% 
+  
+  gt_color_box(columns = duration_mins, 
+                palette=c('white', color_spotify), 
+                domain=c(0,max(tabla_album$duration_mins))) %>% 
+  
+  gt_plt_dist(
+    column = danceability, type = "density", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt_plt_dist(
+    column = energy, type = "density", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt_plt_dist(
+    column = loudness, type = "density", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  gt_plt_dist(
+    column = acousticness, type = "boxplot", line_color = "black", 
+    fill_color = color_spotify) %>% 
+  
+  text_transform(
+    locations = cells_body(columns = instrumentalness),
+    fn = function(x) {
+      map(
+        tabla_plots$instrumentalness,
+        gt::ggplot_image,
+        height = px(60),
+        aspect_ratio = 2
+      )
+    }
+  ) %>% 
+  
+  gt::tab_spanner(label='Un tipo de variables', 
+                  columns=danceability:loudness) %>% 
+  gt::tab_spanner(label='Otro tipo de variables', 
+                  columns = c('acousticness','instrumentalness')) %>% 
+  
+  gt::tab_footnote(
+    locations=cells_column_labels('duration_mins'), 
+    footnote='Duraciòn en minutos = suma de la duración de cada una de las canciones que componen el álbum.') %>% 
+  
+  gt::tab_footnote(
+    locations=cells_column_labels('instrumentalness'), 
+    footnote='En el caso de instrumentalness, al existir valores muy atípicos se muestra la canción a la que corresponde el máximo valor en cada álbum.') %>% 
+  
+  gt::tab_source_note(source_note='Fuente: API de Spotify') %>% 
+  
+  cols_label(
+    album_images = '',
+    album_name = '',
+    album_release_date = 'Lanzamiento',
+    duration_mins = 'Duración',
+    danceability = 'Danceability 🕺',
+    energy = 'Energy ✨',
+    loudness = 'Loudness 🔊',
+    acousticness = 'Acousticness 🎹',
+    instrumentalness = 'Instrumentalness 🎼'
+  ) %>% 
+  
+  my_theme() %>% 
+  
+  gt::cols_hide(album_id)
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Tendencias
 
