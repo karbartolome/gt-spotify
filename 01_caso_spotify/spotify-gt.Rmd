@@ -131,8 +131,11 @@ tabla <- tracks_features %>%
   gt()
 ```
 
-```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE}
 tabla
+```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla, 'tablas/tabla_1.png', vwidth = 2000, vheight = 3000)
 ```
 
@@ -175,8 +178,11 @@ tabla_albums <- df_albums %>%
   gt() 
 ```
 
-```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE}
 tabla_albums
+```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums, 'tablas/tabla_2.png', vwidth = 2000, vheight = 3000)
 ```
 
@@ -224,8 +230,17 @@ tabla_albums <- df_albums %>%  select(-album_id) %>%
       lapply(album_images, web_image, height = 50)
     }
   ) 
+```
 
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 tabla_albums %>% cols_hide(all_of(vars_audio))
+```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_albums %>% cols_hide(all_of(vars_audio)), 
+  'tablas/tabla_3.png', vwidth = 2000, vheight = 3000)
+
+knitr::include_graphics('tablas/tabla_3.png')
 ```
 
 Otra función útil para visualizar este tipo de información es **gt_merge_stack()** que permite concatenar dos variables en una única:
@@ -236,9 +251,20 @@ tabla_albums <- tabla_albums %>%
   gt_merge_stack(
     col1 = album_name, 
     col2 = artist_name) 
-
-tabla_albums %>% cols_hide(all_of(vars_audio))
 ```
+
+
+```{r, eval=FALSE}
+tabla_albums %>% cols_hide(all_of(vars_audio)) 
+```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_albums %>% cols_hide(all_of(vars_audio)), 
+  'tablas/tabla_4.png', vwidth = 2000, vheight = 3000)
+
+knitr::include_graphics('tablas/tabla_4.png')
+```
+
 
 Para visualizar las variables de audio, se utilizarán algunas funcionalidades del paquete {gtExtras} 📦: 
 
@@ -265,7 +291,17 @@ tabla_albums <- tabla_albums %>%
               type = "boxplot", line_color = "black", 
               fill_color = color_spotify)
 
+```
+
+```{r, eval=FALSE}
 tabla_albums %>% cols_hide('instrumentalness')
+```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_albums %>% cols_hide('instrumentalness'),
+  'tablas/tabla_5.png', vwidth = 2000, vheight = 3000)
+
+knitr::include_graphics('tablas/tabla_5.png')
 ```
 
 ## 3.4 GGplot en gt
@@ -340,8 +376,19 @@ tabla_albums <- tabla_albums %>%
       )
     }
   ) 
+```
+
+```{r, eval=FALSE}
 tabla_albums
 ```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_albums,
+  'tablas/tabla_6.png', vwidth = 2000, vheight = 3000)
+
+knitr::include_graphics('tablas/tabla_6.png')
+```
+
 
 
 ## Formato
@@ -376,8 +423,17 @@ tabla_albums <- tabla_albums %>%
     acousticness = 'Acousticness 🎹',
     instrumentalness = 'Instrumentalness 🎼'
   )  
+```
 
+```{r, eval=FALSE}
 tabla_albums
+```
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_albums,
+  'tablas/tabla_7.png', vwidth = 2000, vheight = 3000)
+
+knitr::include_graphics('tablas/tabla_7.png')
 ```
 
 Además, se añade un theme específico para asignarle colores y formatos adicionales: 
@@ -405,15 +461,15 @@ tabla_albums <- tabla_albums %>%
     my_theme()
 ```
 
-
-```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE}
 tabla_albums
-gt::gtsave(tabla_albums, 'tablas/tabla_3.png', 
-           vwidth = 2000, vheight = 3000)
 ```
 
-```{r}
-knitr::include_graphics('tablas/tabla_3.png')
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla_albums, 'tablas/tabla_7.png', 
+           vwidth = 2000, vheight = 3000)
+
+knitr::include_graphics('tablas/tabla_7.png')
 ```
 
 ```{r}
