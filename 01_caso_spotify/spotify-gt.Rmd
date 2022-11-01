@@ -145,7 +145,7 @@ knitr::include_graphics('tablas/tabla_1.png')
 
 Notar que las variables numéricas aparecen con muchos decimales. Una forma sencilla de arreglar esto en {gt} es la siguiente. En este caso, dejando 4 decimales para visualizar la variable instrumentalness:
 
-```{r}
+```{r, eval=FALSE}
 tabla %>% 
   fmt_number(columns = where(is.numeric), decimals=4)
 ```
@@ -308,7 +308,7 @@ knitr::include_graphics('tablas/tabla_5.png')
 
 Notar que si se agregara el boxplot para el caso de la variable instrumentalness, se observa, para todos los álbumes, distribuciones con valores atípicos:
 
-```{r}
+```{r, eval=FALSE}
 tabla_albums %>%
   gt_plt_dist(column = instrumentalness,
               type = "boxplot", line_color = "black", 
