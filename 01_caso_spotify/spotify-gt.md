@@ -458,7 +458,7 @@ tabla_albums <- tabla_albums %>%
 tabla_albums
 ```
 
-![](tablas/tabla_7.png)<!-- -->
+![](tablas/tabla_8.png)<!-- -->
 
 ``` r
 knitr::knit_exit()

@@ -466,10 +466,10 @@ tabla_albums
 ```
 
 ```{r, eval=TRUE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_albums, 'tablas/tabla_7.png', 
+gt::gtsave(tabla_albums, 'tablas/tabla_8.png', 
            vwidth = 2000, vheight = 3000)
 
-knitr::include_graphics('tablas/tabla_7.png')
+knitr::include_graphics('tablas/tabla_8.png')
 ```
 
 ```{r}
