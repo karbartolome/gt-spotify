@@ -231,12 +231,33 @@ Para más información, visitar la <a href="https://developer.spotify.com/docume
 
 Cómo obtener las credenciales de Spotify para seguir el taller
 
+**Autenticación**
+
+```{r, echo=FALSE}
+credentials <- fromJSON(file = here::here("01_caso_spotify/credentials.json"))
+
+Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
+```
+
+```{r, code_folding=TRUE}
+access_token <- get_spotify_access_token()
+```
+
 
 ---
 
 ## Consulta simple a la API 
 
 Consulta de los 10 artístas más escuchadods en el corto plazo
+
+```{r, eval=FALSE}
+tabla_user <- get_my_top_artists_or_tracks(
+    type = 'artists', 
+    time_range = 'short_term', 
+    limit = 10
+) 
+```
 
 
 ---
@@ -245,10 +266,27 @@ class: center, middle,big-font
 
 # Introducción a {gt}
 
+```{r,  fig.align='center', echo=FALSE, out.width='40%'}
+knitr::include_graphics('images/gt_meme.jpg')
+```
+
 
 ---
 
-IMAGEN GT GRAMMAR OF TABLES
+The grammar of tables (gt) se basa en la siguiente estructura: 
+
+```{r, fig.align='center', echo=FALSE, fig.cap='Estructura de tablas gt, fuente: https://gt.rstudio.com'}
+knitr::include_graphics('https://karbartolome-blog.netlify.app/posts/tablas-subte/images/gt_workflow_diagram.svg')
+```
+
+
+---
+
+En donde las tablas tienen un formato específico, generado mediante capas:
+
+```{r,  fig.align='center', echo=FALSE, fig.cap='Estructura de tablas gt, fuente: https://gt.rstudio.com'}
+knitr::include_graphics('https://karbartolome-blog.netlify.app/posts/tablas-subte/images/gt_parts_of_a_table.svg')
+```
 
 ---
 
