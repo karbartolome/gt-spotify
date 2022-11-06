@@ -24,20 +24,22 @@ knitr::opts_chunk$set(comment = NA)
 options(scipen=999)
 options(reticulate.repl.quiet = TRUE)
 options(servr.daemon = TRUE) # para infinite moon reader
-gtsummary::theme_gtsummary_language('es')
-```
 
-```{r xaringan-panelset, echo=FALSE}
 xaringanExtra::use_panelset()
-```
 
-```{r xaringan-logo, echo=FALSE}
 xaringanExtra::use_logo(
   image_url = 'images/github.png', 
   link_url  = 'https://github.com/karbartolome/rladies_charlas/tree/main/01_r_python', 
   width     = '30px', 
   height    = '30px'
 )
+
+image_link <- function(image,url,...){
+  htmltools::a(
+    href=url,
+    htmltools::img(src=image,...)
+    )
+}
 ```
 
 ```{css, echo=FALSE}
@@ -70,15 +72,6 @@ h1, h2, h3 {
   color: #562457;
 }
 
-```
-
-```{r, echo=FALSE}
-image_link <- function(image,url,...){
-  htmltools::a(
-    href=url,
-    htmltools::img(src=image,...)
-    )
-}
 ```
 
 # ¿Quiénes somos?
@@ -252,11 +245,15 @@ access_token <- get_spotify_access_token()
 Consulta de los 10 artístas más escuchadods en el corto plazo
 
 ```{r, eval=FALSE}
-tabla_user <- get_my_top_artists_or_tracks(
+df_artistas <- get_my_top_artists_or_tracks(
     type = 'artists', 
     time_range = 'short_term', 
-    limit = 10
-) 
+    limit = 2
+  ) %>% 
+  select(name, followers.total, genres) 
+
+df_artistas %>% 
+  head()
 ```
 
 
@@ -290,34 +287,98 @@ knitr::include_graphics('https://karbartolome-blog.netlify.app/posts/tablas-subt
 
 ---
 
-Acá me imagino armar un ejemplo bien simple onda un df de 5 filas, convertirlo a gt, y 2 o 3 capas gt
-
--- EJEMPLO CON EL DF GENERADO EN EL EJEMPLO DE CONSULTA A API SPOTIFY
-
-
-
----
-
 class: center, middle, big-font
 
 # Bad Bunny 🐰
 
 ---
 
-RMD
+Se define el artista a utilizar:
 
+```{r}
+ARTISTA = 'bad bunny'
+```
+
+Para este artista, se genera una búsqueda de variables:
+
+```{r, eval=FALSE, code_folding=TRUE}
+vars_audio = c(
+  'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
+)
+
+df_albums <- get_artist_audio_features(artist = ARTISTA) %>%
+  select(
+    artist_id, artist_name, album_id, album_name,
+    album_release_date, album_images, track_name, duration_ms,
+    all_of(vars_audio)       
+  ) %>% 
+  arrange(desc(album_release_date)) %>% 
+  group_by(
+    album_images, artist_name, album_id, album_name, album_release_date
+  ) %>%
+  summarise(
+    duration_mins = sum(duration_ms/(1000*60)),
+    across(all_of(vars_audio), ~ list(.x)),
+  ) %>% 
+  ungroup()
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+vars_audio = c(
+  'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
+)
+
+df_albums <- readRDS(here::here('01_caso_spotify/tracks_features.rds')) %>% 
+   group_by(
+    album_images, artist_name, album_id, album_name, album_release_date
+  ) %>%
+  summarise(
+    duration_mins = sum(duration_ms/(1000*60)),
+    across(all_of(vars_audio), ~ list(.x)),
+  ) %>% 
+  ungroup()
+```
 
 ---
 
-# Tabla simple
+Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
-Texto y cosas
+```{r, code_folding=TRUE}
+df_albums %>% 
+  glimpse()
+```
 
 ---
 
-# Se van añadiendo cosas
+Se seleccionan las columnas que no sean listas y se visualizan con **{gt}** 📦
 
-Texto y cosas
+```{r}
+df_albums %>% 
+  select(where(is.numeric) | where(is.character)) %>% 
+  
+  # Se convierte el df a the grammar of tables
+  gt()
+```
+
+---
+
+Con **muchas** capas, se convierte el df original en la siguiente tabla:
+
+```{r, echo=FALSE, out.width='50%', fig.align='center'}
+knitr::include_graphics(here::here('01_caso_spotify/tablas/tabla_8.png'))
+```
+---
+
+class: center, middle
+
+```{r, echo=FALSE, out.width='35%', fig.align='center'}
+knitr::include_graphics('https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg')
+```
+
+
+Link al rmd (paso a paso) 
 
 ---
 

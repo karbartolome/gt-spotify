@@ -35,42 +35,6 @@ class: center, middle, inverse, title-slide
 
 
 
-
-
-<div>
-<style type="text/css">.xaringan-extra-logo {
-width: 30px;
-height: 30px;
-z-index: 0;
-background-image: url(images/github.png);
-background-size: contain;
-background-repeat: no-repeat;
-position: absolute;
-top:1em;right:1em;
-}
-</style>
-<script>(function () {
-  let tries = 0
-  function addLogo () {
-    if (typeof slideshow === 'undefined') {
-      tries += 1
-      if (tries < 10) {
-        setTimeout(addLogo, 100)
-      }
-    } else {
-      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
-        .forEach(function (slide) {
-          const logo = document.createElement('a')
-          logo.classList = 'xaringan-extra-logo'
-          logo.href = 'https://github.com/karbartolome/rladies_charlas/tree/main/01_r_python'
-          slide.appendChild(logo)
-        })
-    }
-  }
-  document.addEventListener('DOMContentLoaded', addLogo)
-})()</script>
-</div>
-
 &lt;style type="text/css"&gt;
 /* Table width = 100% max-width */
 .remark-slide table{
@@ -102,8 +66,6 @@ h1, h2, h3 {
 }
 
 &lt;/style&gt;
-
-
 
 # ¿Quiénes somos?
 
@@ -268,11 +230,15 @@ Consulta de los 10 artístas más escuchadods en el corto plazo
 
 
 ```r
-tabla_user &lt;- get_my_top_artists_or_tracks(
+df_artistas &lt;- get_my_top_artists_or_tracks(
     type = 'artists', 
     time_range = 'short_term', 
-    limit = 10
-) 
+    limit = 2
+  ) %&gt;% 
+  select(name, followers.total, genres) 
+
+df_artistas %&gt;% 
+  head()
 ```
 
 
@@ -306,34 +272,553 @@ En donde las tablas tienen un formato específico, generado mediante capas:
 
 ---
 
-Acá me imagino armar un ejemplo bien simple onda un df de 5 filas, convertirlo a gt, y 2 o 3 capas gt
-
--- EJEMPLO CON EL DF GENERADO EN EL EJEMPLO DE CONSULTA A API SPOTIFY
-
-
-
----
-
 class: center, middle, big-font
 
 # Bad Bunny 🐰
 
 ---
 
-RMD
+Se define el artista a utilizar:
+
+
+```r
+ARTISTA = 'bad bunny'
+```
+
+Para este artista, se genera una búsqueda de variables:
+
+
+```r
+vars_audio = c(
+  'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
+)
+
+df_albums &lt;- get_artist_audio_features(artist = ARTISTA) %&gt;%
+  select(
+    artist_id, artist_name, album_id, album_name,
+    album_release_date, album_images, track_name, duration_ms,
+    all_of(vars_audio)       
+  ) %&gt;% 
+  arrange(desc(album_release_date)) %&gt;% 
+  group_by(
+    album_images, artist_name, album_id, album_name, album_release_date
+  ) %&gt;%
+  summarise(
+    duration_mins = sum(duration_ms/(1000*60)),
+    across(all_of(vars_audio), ~ list(.x)),
+  ) %&gt;% 
+  ungroup()
+```
+
+
+
 
 
 ---
 
-# Tabla simple
+Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
-Texto y cosas
+
+```r
+df_albums %&gt;% 
+  glimpse()
+```
+
+```
+Rows: 6
+Columns: 11
+$ album_images       &lt;list&gt; [&lt;data.frame[3 x 3]&gt;], [&lt;data.frame[3 x 3]&gt;], [&lt;da…
+$ artist_name        &lt;chr&gt; "Bad Bunny", "Bad Bunny", "Bad Bunny", "Bad Bunny",…
+$ album_id           &lt;chr&gt; "3RQQmkQEvNCY4prGKE6oc5", "2d9BCZeAAhiZWPpbX9aPCW",…
+$ album_name         &lt;chr&gt; "Un Verano Sin Ti", "EL ÚLTIMO TOUR DEL MUNDO", "LA…
+$ album_release_date &lt;chr&gt; "2022-05-06", "2020-11-27", "2020-05-10", "2020-02-…
+$ duration_mins      &lt;dbl&gt; 81.85270, 47.33332, 30.31767, 65.96717, 31.10840, 5…
+$ danceability       &lt;list&gt; &lt;0.804, 0.564, 0.911, 0.650, 0.787, 0.872, 0.795, …
+$ energy             &lt;list&gt; &lt;0.674, 0.903, 0.712, 0.715, 0.546, 0.588, 0.684, …
+$ loudness           &lt;list&gt; &lt;-5.453, -3.221, -5.105, -5.198, -7.094, -6.276, -…
+$ acousticness       &lt;list&gt; &lt;0.2940, 0.3560, 0.0901, 0.0993, 0.3050, 0.2750, 0…
+$ instrumentalness   &lt;list&gt; &lt;0.00000118, 0.00000000, 0.00002680, 0.00029100, 0…
+```
 
 ---
 
-# Se van añadiendo cosas
+Se seleccionan las columnas que no sean listas y se visualizan con **{gt}** 📦
 
-Texto y cosas
+
+```r
+df_albums %&gt;% 
+  select(where(is.numeric) | where(is.character)) %&gt;% 
+  
+  # Se convierte el df a the grammar of tables
+  gt()
+```
+
+<div id="bjcrjqnwds" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bjcrjqnwds .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bjcrjqnwds .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bjcrjqnwds .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bjcrjqnwds .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bjcrjqnwds .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bjcrjqnwds .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bjcrjqnwds .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bjcrjqnwds .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bjcrjqnwds .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bjcrjqnwds .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bjcrjqnwds .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bjcrjqnwds .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bjcrjqnwds .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjcrjqnwds .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#bjcrjqnwds .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#bjcrjqnwds .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjcrjqnwds .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#bjcrjqnwds .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjcrjqnwds .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bjcrjqnwds .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjcrjqnwds .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bjcrjqnwds .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjcrjqnwds .gt_left {
+  text-align: left;
+}
+
+#bjcrjqnwds .gt_center {
+  text-align: center;
+}
+
+#bjcrjqnwds .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bjcrjqnwds .gt_font_normal {
+  font-weight: normal;
+}
+
+#bjcrjqnwds .gt_font_bold {
+  font-weight: bold;
+}
+
+#bjcrjqnwds .gt_font_italic {
+  font-style: italic;
+}
+
+#bjcrjqnwds .gt_super {
+  font-size: 65%;
+}
+
+#bjcrjqnwds .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#bjcrjqnwds .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#bjcrjqnwds .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#bjcrjqnwds .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#bjcrjqnwds .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#bjcrjqnwds .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#bjcrjqnwds .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">duration_mins</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">artist_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">album_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">album_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">album_release_date</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">81.85270</td>
+<td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">3RQQmkQEvNCY4prGKE6oc5</td>
+<td class="gt_row gt_left">Un Verano Sin Ti</td>
+<td class="gt_row gt_right">2022-05-06</td></tr>
+    <tr><td class="gt_row gt_right">47.33332</td>
+<td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">2d9BCZeAAhiZWPpbX9aPCW</td>
+<td class="gt_row gt_left">EL ÚLTIMO TOUR DEL MUNDO</td>
+<td class="gt_row gt_right">2020-11-27</td></tr>
+    <tr><td class="gt_row gt_right">30.31767</td>
+<td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">4gvQO5mEuhbMSrLIuwXkmz</td>
+<td class="gt_row gt_left">LAS QUE NO IBAN A SALIR</td>
+<td class="gt_row gt_right">2020-05-10</td></tr>
+    <tr><td class="gt_row gt_right">65.96717</td>
+<td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">5lJqux7orBlA1QzyiBGti1</td>
+<td class="gt_row gt_left">YHLQMDLG</td>
+<td class="gt_row gt_right">2020-02-29</td></tr>
+    <tr><td class="gt_row gt_right">31.10840</td>
+<td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">6ylFfzx32ICw4L1A7YWNLN</td>
+<td class="gt_row gt_left">OASIS</td>
+<td class="gt_row gt_right">2019-06-28</td></tr>
+    <tr><td class="gt_row gt_right">53.94298</td>
+<td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">7CjJb2mikwAWA1V6kewFBF</td>
+<td class="gt_row gt_left">X 100PRE</td>
+<td class="gt_row gt_right">2018-12-23</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+---
+
+Con **muchas** capas, se convierte el df original en la siguiente tabla:
+
+&lt;img src="../01_caso_spotify/tablas/tabla_8.png" width="50%" style="display: block; margin: auto;" /&gt;
+---
+
+class: center, middle
+
+&lt;img src="https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg" width="35%" style="display: block; margin: auto;" /&gt;
+
+
+Link al rmd (paso a paso) 
 
 ---
 
