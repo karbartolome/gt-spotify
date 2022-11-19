@@ -2,9 +2,9 @@ library(tidyverse) # Manipulación de datos
 library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
 library(spotifyr)  # API de spotify
-library(gtrendsR)  # Google trends API
-library("rjson")
+library(rjson)
 
+color_spotify = "#1DB954"
 
 credentials <- fromJSON(file = "credentials.json")
 
@@ -246,11 +246,11 @@ gen_tabla_artista <- function(
 }
 
 
-df = gen_data_artista(.artista='bad bunny')
+df = gen_data_artista(.artista='madonna')
 
 tabla <- gen_tabla_artista(
   .df=df, 
-  .head=NULL)
+  .head=5)
 
 
 tabla

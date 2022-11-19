@@ -2,7 +2,7 @@
 title: "Creando tablas en {gt} con Spotify API & Bad Bunny"
 subtitle: "︿<br/>R-Ladies Buenos Aires"
 author: "Andrea Gómez Vargas & Karina Bartolomé"
-date: '2022-10-24'
+date: '2022-11-23'
 output:
   xaringan::moon_reader:
     css: ["default", "rladies", "rladies-fonts"]
@@ -17,6 +17,9 @@ output:
       in_header: header.html
       after_body: "collapseoutput.js"
 ---
+class: center, middle, big-font
+
+# RLadies
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(comment = NA)
@@ -64,7 +67,7 @@ image_link <- function(image,url,...){
 }
 /* Tamaño letra contenido */
 .remark-slide-content {
-  font-size: 24pt;
+  font-size: 20pt;
 }
 
 h1, h2, h3 {
@@ -74,32 +77,105 @@ h1, h2, h3 {
 
 ```
 
-# ¿Quiénes somos?
+
+
+
+---
+
+## Rladies Global
+
+
+.pull-left[
+
+```{r, out.width='50%', fig.align='center', echo=FALSE}
+knitr::include_graphics('https://rladies.org/wp-content/uploads/2016/12/R-LadiesGlobal.png')
+```
+
+- 216 capítulos
+- 61 países
+- 100267 miembrxs
+
+]
+
+.pull-right[
+
+```{r, out.width='100%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/rladiesglobal.png')
+```
+]
+
+---
+
+## Rladies Buenos Aires
+
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/rladiesba.png')
+```
+
+
+---
+
+## Sponsors
+
 
 .pull-left[
 
 ```{r, out.width='70%', fig.align='center', echo=FALSE}
-knitr::include_graphics('images/imagen1.PNG')
+knitr::include_graphics('https://rladiesba.netlify.app/author/rladies-buenos-aires/avatar_huae50964fd4ece6c135015c99a5e9a56e_144270_270x270_fill_lanczos_center_2.png')
 ```
+
 ]
 
 .pull-right[
-### Andrea Gómez Vargas
-- Socióloga
-- Data Analyst en INDEC
-- Fan de Bad Bunny 
 
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('https://guide.rladies.org/images/horizontal-logo.png')
+```
+
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('https://www.r-consortium.org/wp-content/uploads/sites/13/2016/09/RConsortium_Horizontal_Pantone.png')
+```
+
+]
+
+---
+class: center, middle, big-font, inverse
+
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('https://www.meetup.com/_next/image/?url=https%3A%2F%2Fsecure-content.meetupstatic.com%2Fimages%2Fclassic-events%2F508618435%2F676x380.webp&w=1920&q=75')
+```
+
+---
+
+# ¿Quiénes somos?
+
+
+
+```{r, out.width='25%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/imagen1.PNG')
+```
+
+
+.pull-left[
 ### Karina Bartolomé
 - Economista
 - Data Scientist en Ualá 
 - Fan de {gt}
 ]
 
+
+.pull-right[
+### Andrea Gómez Vargas
+- Socióloga
+- Data Analyst en INDEC
+- Fan de Bad Bunny 
+]
+
 ---
 
 class: center, middle, inverse
 
-Antes de arrancar
+# Antes de arrancar
 
 ```{r, out.width='50%', fig.align='center', echo=FALSE}
 knitr::include_graphics('https://thepcosbible-com.exactdn.com/wp-content/uploads/2020/06/giphy-7.gif?strip=all&lossy=1&quality=80&resize=514%2C288&ssl=1')
@@ -144,19 +220,19 @@ class: left, middle
 
 --
 
-🔸 API de Spotify
+🔸 Cómo extraer datos de la **API de Spotify** 
 
 
-🔸 Introducción a The Grammar of Tables (gt)
+🔸 Introducción a **The Grammar of Tables {gt}** 📦
 
 
-🔸 Tabla con datos de Spotify
+🔸 Creación de **tablas en {gt} 📦 con datos de Spotify**
 
 ---
 
-class: center, middle, inverse
+class: center, middle, inverse, big-font
 
-# API de Spotify
+# <a><i class="fa fa-spotify"></i>&nbsp; API de Spotify</a>
 
 ---
 
@@ -182,7 +258,7 @@ knitr::include_graphics('images/apis_meme.png')
 <a href="https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api"><i class="fa fa-twitter fa-fw"></i>&nbsp; API de Twitter</a><br>
 
 
-<a href="https://www.argentina.gob.ar/onti/software-publico/catalogo/apis"><i class="fa fa-globe"></i>&nbsp; APIS Argentina</a><br>
+<a href="https://www.argentina.gob.ar/onti/software-publico/catalogo/apis"><i class="fa fa-globe"></i>&nbsp; APIs Argentina</a><br>
 
 Etc. 
 
@@ -212,19 +288,25 @@ Datos que se pueden obtener a partir de esta API:
 
 --
 
-🔸 Etc.
+🔸 Y más 😎
 
 --
 
-Para más información, visitar la <a href="https://developer.spotify.com/documentation/web-api/reference/#/">documentación  de la API de Spotify</a><br>
+Para más información, visitar la <a href="https://developer.spotify.com/documentation/web-api/reference/#/">**documentación  de la API de Spotify**</a><br>
 
 ---
 
-## Credenciales
+## <a><i class="fa fa-spotify"></i>&nbsp; Credenciales de Spotify</a><br> 
 
-Cómo obtener las credenciales de Spotify para seguir el taller
+Para obtener credenciales que permitan consultar datos desde la API es necesario ingresar a <a href="https://developer.spotify.com/">**Spotify for developers**</a>
 
-**Autenticación**
+Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2ZN5GYlrHkIRl-gGooGEdBm0A/edit">**documento con los pasos detallados para generar tus credenciales**</a>
+
+⚠️ Recordá que tus credenciales son personales, no las compartas. ⚠️
+
+### Autenticación 
+
+Se utiliza la función **get_spotify_access_token()** de {spotifyr} 📦 para autenticarse con las credenciales:
 
 ```{r, echo=FALSE}
 credentials <- fromJSON(file = here::here("01_caso_spotify/credentials.json"))
@@ -240,7 +322,7 @@ access_token <- get_spotify_access_token()
 
 ---
 
-## Consulta simple a la API 
+## <a><i class="fa fa-spotify"></i>&nbsp; Consulta simple a la API</a><br>   
 
 Consulta de los 10 artístas más escuchadods en el corto plazo
 
@@ -259,7 +341,7 @@ df_artistas %>%
 
 ---
 
-class: center, middle,big-font
+class: center, big-font, inverse
 
 # Introducción a {gt}
 
@@ -287,13 +369,13 @@ knitr::include_graphics('https://karbartolome-blog.netlify.app/posts/tablas-subt
 
 ---
 
-class: center, middle, big-font
+class: center, inverse, middle, big-font
 
 # Bad Bunny 🐰
 
 ---
 
-Se define el artista a utilizar:
+Vamos a realizar una búsqueda de datos de Bad Bunny:
 
 ```{r}
 ARTISTA = 'bad bunny'
@@ -305,14 +387,24 @@ Para este artista, se genera una búsqueda de variables:
 vars_audio = c(
   'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
 )
+```
 
-df_albums <- get_artist_audio_features(artist = ARTISTA) %>%
+```{r, eval=FALSE, code_folding=TRUE}
+df_artist_features <- get_artist_audio_features(artist = ARTISTA) %>%
   select(
     artist_id, artist_name, album_id, album_name,
     album_release_date, album_images, track_name, duration_ms,
     all_of(vars_audio)       
   ) %>% 
-  arrange(desc(album_release_date)) %>% 
+  arrange(desc(album_release_date))
+```
+
+---
+
+Realizamos una **agregación por álbum** para obtener la duración total y una lista de todos los valores de cada una de las variables de audio en cada uno de los álbumes:
+
+```{r, eval=FALSE, code_folding=TRUE}
+df_albums <- df_artist_features %>% 
   group_by(
     album_images, artist_name, album_id, album_name, album_release_date
   ) %>%
@@ -323,7 +415,11 @@ df_albums <- get_artist_audio_features(artist = ARTISTA) %>%
   ungroup()
 ```
 
+Estas listas luego serán utilizadas para visualizar la distribución de cada variable a nivel álbum.
 
+---
+
+Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
 ```{r, echo=FALSE, message=FALSE}
 vars_audio = c(
@@ -340,10 +436,6 @@ df_albums <- readRDS(here::here('01_caso_spotify/tracks_features.rds')) %>%
   ) %>% 
   ungroup()
 ```
-
----
-
-Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
 ```{r, code_folding=TRUE}
 df_albums %>% 
@@ -363,22 +455,25 @@ df_albums %>%
 ```
 
 ---
+# grammar of tables
 
+
+---
 Con **muchas** capas, se convierte el df original en la siguiente tabla:
 
-```{r, echo=FALSE, out.width='50%', fig.align='center'}
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics(here::here('01_caso_spotify/tablas/tabla_8.png'))
 ```
 ---
 
 class: center, middle
 
-```{r, echo=FALSE, out.width='35%', fig.align='center'}
+```{r, echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg')
 ```
 
 
-Link al rmd (paso a paso) 
+## Vamos a trabajar al rmd
 
 ---
 
@@ -399,19 +494,36 @@ knitr::include_graphics('https://acegif.com/wp-content/uploads/gifs/spongebob-ra
 
 --
 
-- 
+- obtener datos en API
+
+
+--
+
+- GT 
+
+
+--
+
+- BAD BUNNY
 
 
 ---
 
 # Comparte tu tabla en redes sociales 
 
+
+Armar texto
+
 ---
 
 # Links utiles
 
 - 🔗 [Link 1](https://google.com.ar/)
-
+- gt
+- spotifyr
+- link charla jessi
+- https://community.rstudio.com/c/table-gallery/64
+- [Otro link](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
 ---
 
 class: inverse, center, middle
@@ -430,7 +542,7 @@ class: inverse, center, middle
 ---
 
 
-class: center, middle
+class: center, middle, big-font, inverse
 
 # Muchas gracias!!
 

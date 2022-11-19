@@ -13,8 +13,10 @@ library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
 library(spotifyr)  # API de spotify
 library(gtrendsR)  # Google trends API
-library("rjson")
+library(rjson)
 ```
+
+## EXPLICAR QUE SI NO SE TIENE ACCESO A LA API SE PUEDE LEER EL RDS
 
 ## 2. API Spotify - Credenciales
 
@@ -63,7 +65,7 @@ consulta de los artistas más escuchados:
 tabla_user <- get_my_top_artists_or_tracks(
     type = 'artists', 
     time_range = 'short_term', #'short_term', # 'medium_term', 'long_term' 
-    limit = 10) %>%
+    limit = 5) %>%
   select(name, genres) %>%
   rowwise() %>%
   mutate(genres = paste(genres, collapse = ', ')) %>%

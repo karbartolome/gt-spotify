@@ -4,7 +4,7 @@
     <title>Creando tablas en {gt} con Spotify API &amp; Bad Bunny</title>
     <meta charset="utf-8" />
     <meta name="author" content="Andrea Gómez Vargas &amp; Karina Bartolomé" />
-    <meta name="date" content="2022-10-24" />
+    <meta name="date" content="2022-11-23" />
     <script src="rladies_gt_spotify_files/header-attrs-2.17/header-attrs.js"></script>
     <link href="rladies_gt_spotify_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="rladies_gt_spotify_files/remark-css-0.0.1/rladies.css" rel="stylesheet" />
@@ -27,11 +27,14 @@ class: center, middle, inverse, title-slide
 ### Andrea Gómez Vargas &amp; Karina Bartolomé
 ]
 .date[
-### 2022-10-24
+### 2022-11-23
 ]
 
 ---
 
+class: center, middle, big-font
+
+# RLadies
 
 
 
@@ -57,7 +60,7 @@ class: center, middle, inverse, title-slide
 }
 /* Tamaño letra contenido */
 .remark-slide-content {
-  font-size: 24pt;
+  font-size: 20pt;
 }
 
 h1, h2, h3 {
@@ -67,30 +70,89 @@ h1, h2, h3 {
 
 &lt;/style&gt;
 
-# ¿Quiénes somos?
+
+
+
+---
+
+## Rladies Global
+
 
 .pull-left[
 
-&lt;img src="images/imagen1.PNG" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://rladies.org/wp-content/uploads/2016/12/R-LadiesGlobal.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+- 216 capítulos
+- 61 países
+- 100267 miembrxs
+
 ]
 
 .pull-right[
-### Andrea Gómez Vargas
-- Socióloga
-- Data Analyst en INDEC
-- Fan de Bad Bunny 
 
+&lt;img src="images/rladiesglobal.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Rladies Buenos Aires
+
+&lt;img src="images/rladiesba.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Sponsors
+
+
+.pull-left[
+
+&lt;img src="https://rladiesba.netlify.app/author/rladies-buenos-aires/avatar_huae50964fd4ece6c135015c99a5e9a56e_144270_270x270_fill_lanczos_center_2.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="https://guide.rladies.org/images/horizontal-logo.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="https://www.r-consortium.org/wp-content/uploads/sites/13/2016/09/RConsortium_Horizontal_Pantone.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: center, middle, big-font, inverse
+
+&lt;img src="https://www.meetup.com/_next/image/?url=https%3A%2F%2Fsecure-content.meetupstatic.com%2Fimages%2Fclassic-events%2F508618435%2F676x380.webp&amp;w=1920&amp;q=75" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# ¿Quiénes somos?
+
+
+
+&lt;img src="images/imagen1.PNG" width="25%" style="display: block; margin: auto;" /&gt;
+
+
+.pull-left[
 ### Karina Bartolomé
 - Economista
 - Data Scientist en Ualá 
 - Fan de {gt}
 ]
 
+
+.pull-right[
+### Andrea Gómez Vargas
+- Socióloga
+- Data Analyst en INDEC
+- Fan de Bad Bunny 
+]
+
 ---
 
 class: center, middle, inverse
 
-Antes de arrancar
+# Antes de arrancar
 
 &lt;img src="https://thepcosbible-com.exactdn.com/wp-content/uploads/2020/06/giphy-7.gif?strip=all&amp;lossy=1&amp;quality=80&amp;resize=514%2C288&amp;ssl=1" width="50%" style="display: block; margin: auto;" /&gt;
 
@@ -134,19 +196,19 @@ class: left, middle
 
 --
 
-🔸 API de Spotify
+🔸 Cómo extraer datos de la **API de Spotify** 
 
 
-🔸 Introducción a The Grammar of Tables (gt)
+🔸 Introducción a **The Grammar of Tables {gt}** 📦
 
 
-🔸 Tabla con datos de Spotify
+🔸 Creación de **tablas en {gt} 📦 con datos de Spotify**
 
 ---
 
-class: center, middle, inverse
+class: center, middle, inverse, big-font
 
-# API de Spotify
+# &lt;a&gt;&lt;i class="fa fa-spotify"&gt;&lt;/i&gt;&amp;nbsp; API de Spotify&lt;/a&gt;
 
 ---
 
@@ -170,7 +232,7 @@ Las API son mecanismos que `permiten a dos componentes de software comunicarse e
 &lt;a href="https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api"&gt;&lt;i class="fa fa-twitter fa-fw"&gt;&lt;/i&gt;&amp;nbsp; API de Twitter&lt;/a&gt;&lt;br&gt;
 
 
-&lt;a href="https://www.argentina.gob.ar/onti/software-publico/catalogo/apis"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&amp;nbsp; APIS Argentina&lt;/a&gt;&lt;br&gt;
+&lt;a href="https://www.argentina.gob.ar/onti/software-publico/catalogo/apis"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&amp;nbsp; APIs Argentina&lt;/a&gt;&lt;br&gt;
 
 Etc. 
 
@@ -200,19 +262,25 @@ Datos que se pueden obtener a partir de esta API:
 
 --
 
-🔸 Etc.
+🔸 Y más 😎
 
 --
 
-Para más información, visitar la &lt;a href="https://developer.spotify.com/documentation/web-api/reference/#/"&gt;documentación  de la API de Spotify&lt;/a&gt;&lt;br&gt;
+Para más información, visitar la &lt;a href="https://developer.spotify.com/documentation/web-api/reference/#/"&gt;**documentación  de la API de Spotify**&lt;/a&gt;&lt;br&gt;
 
 ---
 
-## Credenciales
+## &lt;a&gt;&lt;i class="fa fa-spotify"&gt;&lt;/i&gt;&amp;nbsp; Credenciales de Spotify&lt;/a&gt;&lt;br&gt; 
 
-Cómo obtener las credenciales de Spotify para seguir el taller
+Para obtener credenciales que permitan consultar datos desde la API es necesario ingresar a &lt;a href="https://developer.spotify.com/"&gt;**Spotify for developers**&lt;/a&gt;
 
-**Autenticación**
+Compartimos un &lt;a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2ZN5GYlrHkIRl-gGooGEdBm0A/edit"&gt;**documento con los pasos detallados para generar tus credenciales**&lt;/a&gt;
+
+⚠️ Recordá que tus credenciales son personales, no las compartas. ⚠️
+
+### Autenticación 
+
+Se utiliza la función **get_spotify_access_token()** de {spotifyr} 📦 para autenticarse con las credenciales:
 
 
 
@@ -224,7 +292,7 @@ access_token &lt;- get_spotify_access_token()
 
 ---
 
-## Consulta simple a la API 
+## &lt;a&gt;&lt;i class="fa fa-spotify"&gt;&lt;/i&gt;&amp;nbsp; Consulta simple a la API&lt;/a&gt;&lt;br&gt;   
 
 Consulta de los 10 artístas más escuchadods en el corto plazo
 
@@ -244,7 +312,7 @@ df_artistas %&gt;%
 
 ---
 
-class: center, middle,big-font
+class: center, big-font, inverse
 
 # Introducción a {gt}
 
@@ -272,13 +340,13 @@ En donde las tablas tienen un formato específico, generado mediante capas:
 
 ---
 
-class: center, middle, big-font
+class: center, inverse, middle, big-font
 
 # Bad Bunny 🐰
 
 ---
 
-Se define el artista a utilizar:
+Vamos a realizar una búsqueda de datos de Bad Bunny:
 
 
 ```r
@@ -292,14 +360,26 @@ Para este artista, se genera una búsqueda de variables:
 vars_audio = c(
   'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
 )
+```
 
-df_albums &lt;- get_artist_audio_features(artist = ARTISTA) %&gt;%
+
+```r
+df_artist_features &lt;- get_artist_audio_features(artist = ARTISTA) %&gt;%
   select(
     artist_id, artist_name, album_id, album_name,
     album_release_date, album_images, track_name, duration_ms,
     all_of(vars_audio)       
   ) %&gt;% 
-  arrange(desc(album_release_date)) %&gt;% 
+  arrange(desc(album_release_date))
+```
+
+---
+
+Realizamos una **agregación por álbum** para obtener la duración total y una lista de todos los valores de cada una de las variables de audio en cada uno de los álbumes:
+
+
+```r
+df_albums &lt;- df_artist_features %&gt;% 
   group_by(
     album_images, artist_name, album_id, album_name, album_release_date
   ) %&gt;%
@@ -310,13 +390,13 @@ df_albums &lt;- get_artist_audio_features(artist = ARTISTA) %&gt;%
   ungroup()
 ```
 
-
-
-
+Estas listas luego serán utilizadas para visualizar la distribución de cada variable a nivel álbum.
 
 ---
 
 Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
+
+
 
 
 ```r
@@ -353,12 +433,12 @@ df_albums %&gt;%
   gt()
 ```
 
-<div id="bjcrjqnwds" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="yfwglrnrbs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#bjcrjqnwds .gt_table {
+#yfwglrnrbs .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -383,7 +463,7 @@ df_albums %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_heading {
+#yfwglrnrbs .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -395,7 +475,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_title {
+#yfwglrnrbs .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -407,7 +487,7 @@ df_albums %&gt;%
   border-bottom-width: 0;
 }
 
-#bjcrjqnwds .gt_subtitle {
+#yfwglrnrbs .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -419,13 +499,13 @@ df_albums %&gt;%
   border-top-width: 0;
 }
 
-#bjcrjqnwds .gt_bottom_border {
+#yfwglrnrbs .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_col_headings {
+#yfwglrnrbs .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -440,7 +520,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_col_heading {
+#yfwglrnrbs .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -460,7 +540,7 @@ df_albums %&gt;%
   overflow-x: hidden;
 }
 
-#bjcrjqnwds .gt_column_spanner_outer {
+#yfwglrnrbs .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -472,15 +552,15 @@ df_albums %&gt;%
   padding-right: 4px;
 }
 
-#bjcrjqnwds .gt_column_spanner_outer:first-child {
+#yfwglrnrbs .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bjcrjqnwds .gt_column_spanner_outer:last-child {
+#yfwglrnrbs .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bjcrjqnwds .gt_column_spanner {
+#yfwglrnrbs .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -492,7 +572,7 @@ df_albums %&gt;%
   width: 100%;
 }
 
-#bjcrjqnwds .gt_group_heading {
+#yfwglrnrbs .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -517,7 +597,7 @@ df_albums %&gt;%
   vertical-align: middle;
 }
 
-#bjcrjqnwds .gt_empty_group_heading {
+#yfwglrnrbs .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -532,15 +612,15 @@ df_albums %&gt;%
   vertical-align: middle;
 }
 
-#bjcrjqnwds .gt_from_md > :first-child {
+#yfwglrnrbs .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bjcrjqnwds .gt_from_md > :last-child {
+#yfwglrnrbs .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bjcrjqnwds .gt_row {
+#yfwglrnrbs .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -559,7 +639,7 @@ df_albums %&gt;%
   overflow-x: hidden;
 }
 
-#bjcrjqnwds .gt_stub {
+#yfwglrnrbs .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -572,7 +652,7 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#bjcrjqnwds .gt_stub_row_group {
+#yfwglrnrbs .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -586,11 +666,11 @@ df_albums %&gt;%
   vertical-align: top;
 }
 
-#bjcrjqnwds .gt_row_group_first td {
+#yfwglrnrbs .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bjcrjqnwds .gt_summary_row {
+#yfwglrnrbs .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -600,16 +680,16 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#bjcrjqnwds .gt_first_summary_row {
+#yfwglrnrbs .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_first_summary_row.thick {
+#yfwglrnrbs .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bjcrjqnwds .gt_last_summary_row {
+#yfwglrnrbs .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -619,7 +699,7 @@ df_albums %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_grand_summary_row {
+#yfwglrnrbs .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -629,7 +709,7 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#bjcrjqnwds .gt_first_grand_summary_row {
+#yfwglrnrbs .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -639,11 +719,11 @@ df_albums %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_striped {
+#yfwglrnrbs .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bjcrjqnwds .gt_table_body {
+#yfwglrnrbs .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -652,7 +732,7 @@ df_albums %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_footnotes {
+#yfwglrnrbs .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -666,7 +746,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_footnote {
+#yfwglrnrbs .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -675,7 +755,7 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#bjcrjqnwds .gt_sourcenotes {
+#yfwglrnrbs .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -689,7 +769,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#bjcrjqnwds .gt_sourcenote {
+#yfwglrnrbs .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -697,64 +777,64 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#bjcrjqnwds .gt_left {
+#yfwglrnrbs .gt_left {
   text-align: left;
 }
 
-#bjcrjqnwds .gt_center {
+#yfwglrnrbs .gt_center {
   text-align: center;
 }
 
-#bjcrjqnwds .gt_right {
+#yfwglrnrbs .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bjcrjqnwds .gt_font_normal {
+#yfwglrnrbs .gt_font_normal {
   font-weight: normal;
 }
 
-#bjcrjqnwds .gt_font_bold {
+#yfwglrnrbs .gt_font_bold {
   font-weight: bold;
 }
 
-#bjcrjqnwds .gt_font_italic {
+#yfwglrnrbs .gt_font_italic {
   font-style: italic;
 }
 
-#bjcrjqnwds .gt_super {
+#yfwglrnrbs .gt_super {
   font-size: 65%;
 }
 
-#bjcrjqnwds .gt_footnote_marks {
+#yfwglrnrbs .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#bjcrjqnwds .gt_asterisk {
+#yfwglrnrbs .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bjcrjqnwds .gt_indent_1 {
+#yfwglrnrbs .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bjcrjqnwds .gt_indent_2 {
+#yfwglrnrbs .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bjcrjqnwds .gt_indent_3 {
+#yfwglrnrbs .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bjcrjqnwds .gt_indent_4 {
+#yfwglrnrbs .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bjcrjqnwds .gt_indent_5 {
+#yfwglrnrbs .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -807,18 +887,21 @@ df_albums %&gt;%
 </div>
 
 ---
+# grammar of tables
 
+
+---
 Con **muchas** capas, se convierte el df original en la siguiente tabla:
 
-&lt;img src="../01_caso_spotify/tablas/tabla_8.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../01_caso_spotify/tablas/tabla_8.png" width="80%" style="display: block; margin: auto;" /&gt;
 ---
 
 class: center, middle
 
-&lt;img src="https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg" width="35%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg" width="50%" style="display: block; margin: auto;" /&gt;
 
 
-Link al rmd (paso a paso) 
+## Vamos a trabajar al rmd
 
 ---
 
@@ -837,19 +920,36 @@ class: center, middle
 
 --
 
-- 
+- obtener datos en API
+
+
+--
+
+- GT 
+
+
+--
+
+- BAD BUNNY
 
 
 ---
 
 # Comparte tu tabla en redes sociales 
 
+
+Armar texto
+
 ---
 
 # Links utiles
 
 - 🔗 [Link 1](https://google.com.ar/)
-
+- gt
+- spotifyr
+- link charla jessi
+- https://community.rstudio.com/c/table-gallery/64
+- [Otro link](https://www.youtube.com/watch?v=dQw4w9WgXcQ&amp;ab_channel=RickAstley)
 ---
 
 class: inverse, center, middle
@@ -868,7 +968,7 @@ class: inverse, center, middle
 ---
 
 
-class: center, middle
+class: center, middle, big-font, inverse
 
 # Muchas gracias!!
 

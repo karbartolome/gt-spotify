@@ -18,6 +18,8 @@ options(scipen=999)
 color_spotify = "#1DB954"
 ```
 
+
+
 # 1. Librerías
 
 Se definen los paquetes 📦 a utilizar:
@@ -28,8 +30,10 @@ library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
 library(spotifyr)  # API de spotify
 library(gtrendsR)  # Google trends API
-library("rjson")
+library(rjson)
 ```
+
+## EXPLICAR QUE SI NO SE TIENE ACCESO A LA API SE PUEDE LEER EL RDS
 
 ## 2. API Spotify - Credenciales
 
@@ -70,7 +74,7 @@ Para verificar que la autenticación haya sido exitosa, se realiza una consulta 
 tabla_user <- get_my_top_artists_or_tracks(
     type = 'artists', 
     time_range = 'short_term', #'short_term', # 'medium_term', 'long_term' 
-    limit = 10) %>%
+    limit = 5) %>%
   select(name, genres) %>%
   rowwise() %>%
   mutate(genres = paste(genres, collapse = ', ')) %>%
@@ -253,7 +257,6 @@ tabla_albums <- tabla_albums %>%
     col2 = artist_name) 
 ```
 
-
 ```{r, eval=FALSE}
 tabla_albums %>% cols_hide(all_of(vars_audio)) 
 ```
@@ -265,8 +268,7 @@ gt::gtsave(tabla_albums %>% cols_hide(all_of(vars_audio)),
 knitr::include_graphics('tablas/tabla_4.png')
 ```
 
-
-Para visualizar las variables de audio, se utilizarán algunas funcionalidades del paquete {gtExtras} 📦: 
+Para visualizar las variables de audio, se utilizarán algunas funcionalidades del paquete {gtExtras} 📦:
 
 ```{r}
 tabla_albums <- tabla_albums %>% 
@@ -340,7 +342,7 @@ gen_outliers_plots<- function(.df, .variable, .font_size=22, .lwd=3){
 }
 ```
 
-Realizando la prueba de la función, se observa el gráfico que genera: 
+Realizando la prueba de la función, se observa el gráfico que genera:
 
 ```{r}
 gen_outliers_plots(
@@ -348,7 +350,7 @@ gen_outliers_plots(
   .variable='instrumentalness', .font_size=10, .lwd = 0.5)
 ```
 
-Ahora se incluyen estos plots en la tabla. Primero, se mappea la función al df: 
+Ahora se incluyen estos plots en la tabla. Primero, se mappea la función al df:
 
 ```{r}
 df_albums <- df_albums %>% 
@@ -389,10 +391,7 @@ gt::gtsave(tabla_albums,
 knitr::include_graphics('tablas/tabla_6.png')
 ```
 
-
-
 ## Formato
-
 
 ```{r}
 tabla_albums <- tabla_albums %>% 
@@ -436,7 +435,7 @@ gt::gtsave(tabla_albums,
 knitr::include_graphics('tablas/tabla_7.png')
 ```
 
-Además, se añade un theme específico para asignarle colores y formatos adicionales: 
+Además, se añade un theme específico para asignarle colores y formatos adicionales:
 
 ```{r}
 my_theme <- function(gt_object, ...){
@@ -475,7 +474,6 @@ knitr::include_graphics('tablas/tabla_8.png')
 ```{r}
 knitr::knit_exit()
 ```
-
 
 # Tendencias
 
