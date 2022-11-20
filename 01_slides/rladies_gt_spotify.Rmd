@@ -32,7 +32,7 @@ xaringanExtra::use_panelset()
 
 xaringanExtra::use_logo(
   image_url = 'images/github.png', 
-  link_url  = 'https://github.com/karbartolome/rladies_charlas/tree/main/01_r_python', 
+  link_url  = 'https://github.com/karbartolome/gt-spotify', 
   width     = '30px', 
   height    = '30px'
 )
@@ -149,26 +149,24 @@ knitr::include_graphics('https://www.meetup.com/_next/image/?url=https%3A%2F%2Fs
 
 # ¿Quiénes somos?
 
-
-
-```{r, out.width='25%', fig.align='center', echo=FALSE}
+```{r, out.width='20%', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/imagen1.PNG')
 ```
 
 
 .pull-left[
-### Karina Bartolomé
-- Economista
-- Data Scientist en Ualá 
-- Fan de {gt}
-]
-
-
-.pull-right[
 ### Andrea Gómez Vargas
 - Socióloga
 - Data Analyst en INDEC
 - Fan de Bad Bunny 
+]
+
+
+.pull-right[
+### Karina Bartolomé
+- Economista
+- Data Scientist en Ualá 
+- Fan de {gt}
 ]
 
 ---
@@ -203,6 +201,7 @@ library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
 library(spotifyr)  # API de spotify
 library(rjson)     # Leer jsons de credenciales
+library(ggrepel)   # Textos en ggplot
 ```
 
 ---
@@ -309,7 +308,7 @@ Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2Z
 Se utiliza la función **get_spotify_access_token()** de {spotifyr} 📦 para autenticarse con las credenciales:
 
 ```{r, echo=FALSE}
-credentials <- fromJSON(file = here::here("01_caso_spotify/credentials.json"))
+credentials <- fromJSON(file = here::here("02_caso_spotify/credentials.json"))
 
 Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
 Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
@@ -324,18 +323,21 @@ access_token <- get_spotify_access_token()
 
 ## <a><i class="fa fa-spotify"></i>&nbsp; Consulta simple a la API</a><br>   
 
-Consulta de los 10 artístas más escuchadods en el corto plazo
+Consulta de los 2 artistas que más escuchaste en el corto plazo:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 df_artistas <- get_my_top_artists_or_tracks(
     type = 'artists', 
     time_range = 'short_term', 
     limit = 2
   ) %>% 
-  select(name, followers.total, genres) 
+  select(name, followers.total, genres)
+```
 
+
+```{r, eval=TRUE}
 df_artistas %>% 
-  head()
+  head() 
 ```
 
 
@@ -426,7 +428,7 @@ vars_audio = c(
   'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
 )
 
-df_albums <- readRDS(here::here('01_caso_spotify/tracks_features.rds')) %>% 
+df_albums <- readRDS(here::here('02_caso_spotify/tracks_features.rds')) %>% 
    group_by(
     album_images, artist_name, album_id, album_name, album_release_date
   ) %>%
@@ -447,33 +449,49 @@ df_albums %>%
 Se seleccionan las columnas que no sean listas y se visualizan con **{gt}** 📦
 
 ```{r}
-df_albums %>% 
-  select(where(is.numeric) | where(is.character)) %>% 
+tabla <- df_albums %>% 
+  select(artist_name, album_name, album_release_date, duration_mins) %>% 
   
   # Se convierte el df a the grammar of tables
   gt()
+
+tabla
 ```
 
 ---
-# grammar of tables
+
+Siguiendo con la lógica de {gt} 📦 es posible añadir nuevas capas a la tabla. Por ejemplo, se añade título, subtítulo y colore
+
+```{r}
+tabla %>% 
+  tab_header(
+    title = md('**Bad Bunny** en Spotify'),
+    subtitle = 'Álbumes más recientes'
+  ) %>% 
+  gt_color_box(
+    columns = duration_mins, palette=c('white', 'green'), 
+    domain=c(0,round(max(df_albums$duration_mins))+1))
+```
 
 
 ---
-Con **muchas** capas, se convierte el df original en la siguiente tabla:
+Con **muchas** capas, es posible convertir el df original en la siguiente tabla:
 
 ```{r, echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics(here::here('01_caso_spotify/tablas/tabla_8.png'))
+knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_8.png'))
 ```
 ---
 
 class: center, middle
 
-```{r, echo=FALSE, out.width='50%', fig.align='center'}
+```{r, echo=FALSE, out.width='30%', fig.align='center'}
 knitr::include_graphics('https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg')
 ```
 
 
-## Vamos a trabajar al rmd
+Veamos los detalles en el archivo .Rmd:
+
+🔗 [Generando tablas de Bad Bunny a partir de datos de Spotify](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt.Rmd)
 
 ---
 
@@ -489,22 +507,18 @@ class: center, middle
 knitr::include_graphics('https://acegif.com/wp-content/uploads/gifs/spongebob-rainbow-1.gif')
 ```
 
+--
 
-- Las tablas también son una forma de visualización de datos
+- Las tablas también son una forma de visualización de datos.
 
 --
 
-- obtener datos en API
-
-
---
-
-- GT 
-
+- {gt} 📦 simplifica la generación de tablas mediante una estructura similar a {ggplot2} 📦, utilizando capas.
 
 --
 
-- BAD BUNNY
+- Las APIs son un método muy útil para acceder a datos que de otra forma sería muy complejo consultar.
+
 
 
 ---
@@ -518,12 +532,11 @@ Armar texto
 
 # Links utiles
 
-- 🔗 [Link 1](https://google.com.ar/)
+- 🔗 [Galería de tablas de RStudio](https://community.rstudio.com/c/table-gallery/64)
 - gt
 - spotifyr
 - link charla jessi
-- https://community.rstudio.com/c/table-gallery/64
-- [Otro link](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
+- [Otro link (:](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
 ---
 
 class: inverse, center, middle

@@ -128,24 +128,22 @@ class: center, middle, big-font, inverse
 
 # ¿Quiénes somos?
 
-
-
-&lt;img src="images/imagen1.PNG" width="25%" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/imagen1.PNG" width="20%" style="display: block; margin: auto;" /&gt;
 
 
 .pull-left[
-### Karina Bartolomé
-- Economista
-- Data Scientist en Ualá 
-- Fan de {gt}
-]
-
-
-.pull-right[
 ### Andrea Gómez Vargas
 - Socióloga
 - Data Analyst en INDEC
 - Fan de Bad Bunny 
+]
+
+
+.pull-right[
+### Karina Bartolomé
+- Economista
+- Data Scientist en Ualá 
+- Fan de {gt}
 ]
 
 ---
@@ -179,6 +177,7 @@ library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
 library(spotifyr)  # API de spotify
 library(rjson)     # Leer jsons de credenciales
+library(ggrepel)   # Textos en ggplot
 ```
 
 ---
@@ -294,7 +293,7 @@ access_token &lt;- get_spotify_access_token()
 
 ## &lt;a&gt;&lt;i class="fa fa-spotify"&gt;&lt;/i&gt;&amp;nbsp; Consulta simple a la API&lt;/a&gt;&lt;br&gt;   
 
-Consulta de los 10 artístas más escuchadods en el corto plazo
+Consulta de los 2 artistas que más escuchaste en el corto plazo:
 
 
 ```r
@@ -303,10 +302,23 @@ df_artistas &lt;- get_my_top_artists_or_tracks(
     time_range = 'short_term', 
     limit = 2
   ) %&gt;% 
-  select(name, followers.total, genres) 
+  select(name, followers.total, genres)
+```
 
+
+
+```r
 df_artistas %&gt;% 
-  head()
+  head() 
+```
+
+```
+               name followers.total
+1 Las Ligas Menores           77825
+2    Arctic Monkeys        16882785
+                                                           genres
+1         argentine alternative rock, argentine indie, latin rock
+2 garage rock, modern rock, permanent wave, rock, sheffield indie
 ```
 
 
@@ -426,19 +438,21 @@ Se seleccionan las columnas que no sean listas y se visualizan con **{gt}** 📦
 
 
 ```r
-df_albums %&gt;% 
-  select(where(is.numeric) | where(is.character)) %&gt;% 
+tabla &lt;- df_albums %&gt;% 
+  select(artist_name, album_name, album_release_date, duration_mins) %&gt;% 
   
   # Se convierte el df a the grammar of tables
   gt()
+
+tabla
 ```
 
-<div id="yfwglrnrbs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="yxjhncxpol" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#yfwglrnrbs .gt_table {
+#yxjhncxpol .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -463,7 +477,7 @@ df_albums %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_heading {
+#yxjhncxpol .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -475,7 +489,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_title {
+#yxjhncxpol .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -487,7 +501,7 @@ df_albums %&gt;%
   border-bottom-width: 0;
 }
 
-#yfwglrnrbs .gt_subtitle {
+#yxjhncxpol .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -499,13 +513,13 @@ df_albums %&gt;%
   border-top-width: 0;
 }
 
-#yfwglrnrbs .gt_bottom_border {
+#yxjhncxpol .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_col_headings {
+#yxjhncxpol .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -520,7 +534,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_col_heading {
+#yxjhncxpol .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -540,7 +554,7 @@ df_albums %&gt;%
   overflow-x: hidden;
 }
 
-#yfwglrnrbs .gt_column_spanner_outer {
+#yxjhncxpol .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -552,15 +566,15 @@ df_albums %&gt;%
   padding-right: 4px;
 }
 
-#yfwglrnrbs .gt_column_spanner_outer:first-child {
+#yxjhncxpol .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yfwglrnrbs .gt_column_spanner_outer:last-child {
+#yxjhncxpol .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yfwglrnrbs .gt_column_spanner {
+#yxjhncxpol .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -572,7 +586,7 @@ df_albums %&gt;%
   width: 100%;
 }
 
-#yfwglrnrbs .gt_group_heading {
+#yxjhncxpol .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -597,7 +611,7 @@ df_albums %&gt;%
   vertical-align: middle;
 }
 
-#yfwglrnrbs .gt_empty_group_heading {
+#yxjhncxpol .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -612,15 +626,15 @@ df_albums %&gt;%
   vertical-align: middle;
 }
 
-#yfwglrnrbs .gt_from_md > :first-child {
+#yxjhncxpol .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yfwglrnrbs .gt_from_md > :last-child {
+#yxjhncxpol .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yfwglrnrbs .gt_row {
+#yxjhncxpol .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -639,7 +653,7 @@ df_albums %&gt;%
   overflow-x: hidden;
 }
 
-#yfwglrnrbs .gt_stub {
+#yxjhncxpol .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -652,7 +666,7 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#yfwglrnrbs .gt_stub_row_group {
+#yxjhncxpol .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -666,11 +680,11 @@ df_albums %&gt;%
   vertical-align: top;
 }
 
-#yfwglrnrbs .gt_row_group_first td {
+#yxjhncxpol .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yfwglrnrbs .gt_summary_row {
+#yxjhncxpol .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -680,16 +694,16 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#yfwglrnrbs .gt_first_summary_row {
+#yxjhncxpol .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_first_summary_row.thick {
+#yxjhncxpol .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yfwglrnrbs .gt_last_summary_row {
+#yxjhncxpol .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -699,7 +713,7 @@ df_albums %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_grand_summary_row {
+#yxjhncxpol .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -709,7 +723,7 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#yfwglrnrbs .gt_first_grand_summary_row {
+#yxjhncxpol .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -719,11 +733,11 @@ df_albums %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_striped {
+#yxjhncxpol .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yfwglrnrbs .gt_table_body {
+#yxjhncxpol .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -732,7 +746,7 @@ df_albums %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_footnotes {
+#yxjhncxpol .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -746,7 +760,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_footnote {
+#yxjhncxpol .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -755,7 +769,7 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#yfwglrnrbs .gt_sourcenotes {
+#yxjhncxpol .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -769,7 +783,7 @@ df_albums %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#yfwglrnrbs .gt_sourcenote {
+#yxjhncxpol .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -777,64 +791,64 @@ df_albums %&gt;%
   padding-right: 5px;
 }
 
-#yfwglrnrbs .gt_left {
+#yxjhncxpol .gt_left {
   text-align: left;
 }
 
-#yfwglrnrbs .gt_center {
+#yxjhncxpol .gt_center {
   text-align: center;
 }
 
-#yfwglrnrbs .gt_right {
+#yxjhncxpol .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yfwglrnrbs .gt_font_normal {
+#yxjhncxpol .gt_font_normal {
   font-weight: normal;
 }
 
-#yfwglrnrbs .gt_font_bold {
+#yxjhncxpol .gt_font_bold {
   font-weight: bold;
 }
 
-#yfwglrnrbs .gt_font_italic {
+#yxjhncxpol .gt_font_italic {
   font-style: italic;
 }
 
-#yfwglrnrbs .gt_super {
+#yxjhncxpol .gt_super {
   font-size: 65%;
 }
 
-#yfwglrnrbs .gt_footnote_marks {
+#yxjhncxpol .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#yfwglrnrbs .gt_asterisk {
+#yxjhncxpol .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yfwglrnrbs .gt_indent_1 {
+#yxjhncxpol .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yfwglrnrbs .gt_indent_2 {
+#yxjhncxpol .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yfwglrnrbs .gt_indent_3 {
+#yxjhncxpol .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yfwglrnrbs .gt_indent_4 {
+#yxjhncxpol .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yfwglrnrbs .gt_indent_5 {
+#yxjhncxpol .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -842,44 +856,37 @@ df_albums %&gt;%
   
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">duration_mins</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">artist_name</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">album_id</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">album_name</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">album_release_date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">duration_mins</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_right">81.85270</td>
-<td class="gt_row gt_left">Bad Bunny</td>
-<td class="gt_row gt_left">3RQQmkQEvNCY4prGKE6oc5</td>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
 <td class="gt_row gt_left">Un Verano Sin Ti</td>
-<td class="gt_row gt_right">2022-05-06</td></tr>
-    <tr><td class="gt_row gt_right">47.33332</td>
-<td class="gt_row gt_left">Bad Bunny</td>
-<td class="gt_row gt_left">2d9BCZeAAhiZWPpbX9aPCW</td>
+<td class="gt_row gt_right">2022-05-06</td>
+<td class="gt_row gt_right">81.85270</td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
 <td class="gt_row gt_left">EL ÚLTIMO TOUR DEL MUNDO</td>
-<td class="gt_row gt_right">2020-11-27</td></tr>
-    <tr><td class="gt_row gt_right">30.31767</td>
-<td class="gt_row gt_left">Bad Bunny</td>
-<td class="gt_row gt_left">4gvQO5mEuhbMSrLIuwXkmz</td>
+<td class="gt_row gt_right">2020-11-27</td>
+<td class="gt_row gt_right">47.33332</td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
 <td class="gt_row gt_left">LAS QUE NO IBAN A SALIR</td>
-<td class="gt_row gt_right">2020-05-10</td></tr>
-    <tr><td class="gt_row gt_right">65.96717</td>
-<td class="gt_row gt_left">Bad Bunny</td>
-<td class="gt_row gt_left">5lJqux7orBlA1QzyiBGti1</td>
+<td class="gt_row gt_right">2020-05-10</td>
+<td class="gt_row gt_right">30.31767</td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
 <td class="gt_row gt_left">YHLQMDLG</td>
-<td class="gt_row gt_right">2020-02-29</td></tr>
-    <tr><td class="gt_row gt_right">31.10840</td>
-<td class="gt_row gt_left">Bad Bunny</td>
-<td class="gt_row gt_left">6ylFfzx32ICw4L1A7YWNLN</td>
+<td class="gt_row gt_right">2020-02-29</td>
+<td class="gt_row gt_right">65.96717</td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
 <td class="gt_row gt_left">OASIS</td>
-<td class="gt_row gt_right">2019-06-28</td></tr>
-    <tr><td class="gt_row gt_right">53.94298</td>
-<td class="gt_row gt_left">Bad Bunny</td>
-<td class="gt_row gt_left">7CjJb2mikwAWA1V6kewFBF</td>
+<td class="gt_row gt_right">2019-06-28</td>
+<td class="gt_row gt_right">31.10840</td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
 <td class="gt_row gt_left">X 100PRE</td>
-<td class="gt_row gt_right">2018-12-23</td></tr>
+<td class="gt_row gt_right">2018-12-23</td>
+<td class="gt_row gt_right">53.94298</td></tr>
   </tbody>
   
   
@@ -887,21 +894,519 @@ df_albums %&gt;%
 </div>
 
 ---
-# grammar of tables
+
+Siguiendo con la lógica de {gt} 📦 es posible añadir nuevas capas a la tabla. Por ejemplo, se añade título, subtítulo y colore
+
+
+```r
+tabla %&gt;% 
+  tab_header(
+    title = md('**Bad Bunny** en Spotify'),
+    subtitle = 'Álbumes más recientes'
+  ) %&gt;% 
+  gt_color_box(
+    columns = duration_mins, palette=c('white', 'green'), 
+    domain=c(0,round(max(df_albums$duration_mins))+1))
+```
+
+<div id="uegupddfsw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#uegupddfsw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#uegupddfsw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#uegupddfsw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#uegupddfsw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#uegupddfsw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#uegupddfsw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#uegupddfsw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#uegupddfsw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#uegupddfsw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#uegupddfsw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#uegupddfsw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#uegupddfsw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#uegupddfsw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uegupddfsw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#uegupddfsw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#uegupddfsw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uegupddfsw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#uegupddfsw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uegupddfsw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#uegupddfsw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uegupddfsw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#uegupddfsw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uegupddfsw .gt_left {
+  text-align: left;
+}
+
+#uegupddfsw .gt_center {
+  text-align: center;
+}
+
+#uegupddfsw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#uegupddfsw .gt_font_normal {
+  font-weight: normal;
+}
+
+#uegupddfsw .gt_font_bold {
+  font-weight: bold;
+}
+
+#uegupddfsw .gt_font_italic {
+  font-style: italic;
+}
+
+#uegupddfsw .gt_super {
+  font-size: 65%;
+}
+
+#uegupddfsw .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#uegupddfsw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#uegupddfsw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#uegupddfsw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#uegupddfsw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#uegupddfsw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#uegupddfsw .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <td colspan="4" class="gt_heading gt_title gt_font_normal" style><strong>Bad Bunny</strong> en Spotify</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Álbumes más recientes</td>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">artist_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">album_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">album_release_date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">duration_mins</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">Un Verano Sin Ti</td>
+<td class="gt_row gt_right">2022-05-06</td>
+<td class="gt_row gt_right"><div>
+  <div style="height: 20px;width:70px; background-color: #1AFF1033;border-radius:5px;)">
+    <div style="height: 13px;width: 13px;background-color: #1AFF10;display: inline-block;border-radius:4px;float:left;position:relative;top:17%;left:6%;"></div>
+    <div style="display: inline-block;float:right;line-height:20px; font-weight: bold;padding: 0px 2.5px;">82</div>
+  </div>
+</div></td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">EL ÚLTIMO TOUR DEL MUNDO</td>
+<td class="gt_row gt_right">2020-11-27</td>
+<td class="gt_row gt_right"><div>
+  <div style="height: 20px;width:70px; background-color: #A4FF8C33;border-radius:5px;)">
+    <div style="height: 13px;width: 13px;background-color: #A4FF8C;display: inline-block;border-radius:4px;float:left;position:relative;top:17%;left:6%;"></div>
+    <div style="display: inline-block;float:right;line-height:20px; font-weight: bold;padding: 0px 2.5px;">47</div>
+  </div>
+</div></td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">LAS QUE NO IBAN A SALIR</td>
+<td class="gt_row gt_right">2020-05-10</td>
+<td class="gt_row gt_right"><div>
+  <div style="height: 20px;width:70px; background-color: #C8FFB633;border-radius:5px;)">
+    <div style="height: 13px;width: 13px;background-color: #C8FFB6;display: inline-block;border-radius:4px;float:left;position:relative;top:17%;left:6%;"></div>
+    <div style="display: inline-block;float:right;line-height:20px; font-weight: bold;padding: 0px 2.5px;">30</div>
+  </div>
+</div></td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">YHLQMDLG</td>
+<td class="gt_row gt_right">2020-02-29</td>
+<td class="gt_row gt_right"><div>
+  <div style="height: 20px;width:70px; background-color: #71FF5933;border-radius:5px;)">
+    <div style="height: 13px;width: 13px;background-color: #71FF59;display: inline-block;border-radius:4px;float:left;position:relative;top:17%;left:6%;"></div>
+    <div style="display: inline-block;float:right;line-height:20px; font-weight: bold;padding: 0px 2.5px;">66</div>
+  </div>
+</div></td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">OASIS</td>
+<td class="gt_row gt_right">2019-06-28</td>
+<td class="gt_row gt_right"><div>
+  <div style="height: 20px;width:70px; background-color: #C7FFB433;border-radius:5px;)">
+    <div style="height: 13px;width: 13px;background-color: #C7FFB4;display: inline-block;border-radius:4px;float:left;position:relative;top:17%;left:6%;"></div>
+    <div style="display: inline-block;float:right;line-height:20px; font-weight: bold;padding: 0px 2.5px;">31</div>
+  </div>
+</div></td></tr>
+    <tr><td class="gt_row gt_left">Bad Bunny</td>
+<td class="gt_row gt_left">X 100PRE</td>
+<td class="gt_row gt_right">2018-12-23</td>
+<td class="gt_row gt_right"><div>
+  <div style="height: 20px;width:70px; background-color: #94FF7B33;border-radius:5px;)">
+    <div style="height: 13px;width: 13px;background-color: #94FF7B;display: inline-block;border-radius:4px;float:left;position:relative;top:17%;left:6%;"></div>
+    <div style="display: inline-block;float:right;line-height:20px; font-weight: bold;padding: 0px 2.5px;">54</div>
+  </div>
+</div></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
 
 
 ---
-Con **muchas** capas, se convierte el df original en la siguiente tabla:
+Con **muchas** capas, es posible convertir el df original en la siguiente tabla:
 
-&lt;img src="../01_caso_spotify/tablas/tabla_8.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="../02_caso_spotify/tablas/tabla_8.png" width="80%" style="display: block; margin: auto;" /&gt;
 ---
 
 class: center, middle
 
-&lt;img src="https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg" width="30%" style="display: block; margin: auto;" /&gt;
 
 
-## Vamos a trabajar al rmd
+Veamos los detalles en el archivo .Rmd:
+
+🔗 [Generando tablas de Bad Bunny a partir de datos de Spotify](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt.Rmd)
 
 ---
 
@@ -915,22 +1420,18 @@ class: center, middle
 
 &lt;img src="https://acegif.com/wp-content/uploads/gifs/spongebob-rainbow-1.gif" width="20%" style="display: block; margin: auto;" /&gt;
 
+--
 
-- Las tablas también son una forma de visualización de datos
+- Las tablas también son una forma de visualización de datos.
 
 --
 
-- obtener datos en API
-
-
---
-
-- GT 
-
+- {gt} 📦 simplifica la generación de tablas mediante una estructura similar a {ggplot2} 📦, utilizando capas.
 
 --
 
-- BAD BUNNY
+- Las APIs son un método muy útil para acceder a datos que de otra forma sería muy complejo consultar.
+
 
 
 ---
@@ -944,12 +1445,11 @@ Armar texto
 
 # Links utiles
 
-- 🔗 [Link 1](https://google.com.ar/)
+- 🔗 [Galería de tablas de RStudio](https://community.rstudio.com/c/table-gallery/64)
 - gt
 - spotifyr
 - link charla jessi
-- https://community.rstudio.com/c/table-gallery/64
-- [Otro link](https://www.youtube.com/watch?v=dQw4w9WgXcQ&amp;ab_channel=RickAstley)
+- [Otro link (:](https://www.youtube.com/watch?v=dQw4w9WgXcQ&amp;ab_channel=RickAstley)
 ---
 
 class: inverse, center, middle
