@@ -1,7 +1,7 @@
 ---
 title: "Tablas GT y Spotify"
 author: "RLadies BA"
-date: '2022-07-30'
+date: '2022-11-23'
 output: github_document
 ---
 
@@ -18,22 +18,20 @@ options(scipen=999)
 color_spotify = "#1DB954"
 ```
 
-
-
 # 1. Librerías
 
-Se definen los paquetes 📦 a utilizar:
+Se definen los **paquetes** 📦 a utilizar:
 
 ```{r}
 library(tidyverse) # Manipulación de datos
 library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
-library(spotifyr)  # API de spotify
-library(gtrendsR)  # Google trends API
-library(rjson)
+library(spotifyr)  # Trabajar con la API de spotify
+library(rjson)     # Lectura de archivo json
+library(ggrepel)   # Para textos en ggplot
 ```
 
-## EXPLICAR QUE SI NO SE TIENE ACCESO A LA API SE PUEDE LEER EL RDS
+**⚠️ De no haber podido obtener las credenciales para consultar a la API de Spotify, pasar al punto 3, en donde se leen los datos de un dataframe almacenado en el repositorio.** **⚠️**
 
 ## 2. API Spotify - Credenciales
 
@@ -53,7 +51,7 @@ El formato del archivo **credentials.json** está incluido en el .gitignore del 
 }
 ```
 
-Se realiza la lectura de las credenciales mediante la función fromJSON(). Luego, se setean como variables de entorno:
+Se realiza la lectura de las credenciales mediante la función **fromJSON()**. Luego, se setean como variables de entorno:
 
 ```{r}
 credentials <- fromJSON(file = "credentials.json")
@@ -62,7 +60,7 @@ Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
 Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
 ```
 
-Se utiliza la función **get_spotify_access_token**() del paquete {**spotifyr**} 📦para autenticarse a la API\>
+Se utiliza la función **get_spotify_access_token**() del paquete {**spotifyr**} 📦para autenticarse a la API:
 
 ```{r}
 access_token <- get_spotify_access_token()
@@ -90,7 +88,7 @@ Se define el artista a utilizar:
 ARTISTA = 'bad bunny'
 ```
 
-Para este artista, se genera una búsqueda de variables:
+La función **get_artist_audio_features()** del paquete {**spotifyr**} 📦 permite generar una búsqueda de variables vinculadas al audio de cada track.
 
 ```{r}
 vars_audio = c(
@@ -112,6 +110,10 @@ tracks_features <- get_artist_audio_features(artist = ARTISTA) %>%
   arrange(desc(album_release_date))
 ```
 
+# 3. The grammar of tables (gt)
+
+De no haber podido autenticarte con la API de Spotify, dejamos un archivo .rds con los datos necesarios para seguir con el resto del taller:
+
 ```{r}
 # tracks_features %>% saveRDS('tracks_features.rds')
 tracks_features <- readRDS('tracks_features.rds')
@@ -124,14 +126,14 @@ tracks_features %>%
   glimpse()
 ```
 
-# 3. The grammar of tables (gt)
-
 ## 3.1 Intro a gt
 
 ```{r}
 tabla <- tracks_features %>% 
   head() %>% 
-  select(artist_name, album_name, all_of(vars_audio)) %>% 
+  select(artist_name, album_name, track_name, all_of(vars_audio)) %>% 
+  
+  # En este paso se transforma el df en un objeto gt:
   gt()
 ```
 
@@ -139,20 +141,31 @@ tabla <- tracks_features %>%
 tabla
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla, 'tablas/tabla_1.png', vwidth = 2000, vheight = 3000)
 ```
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics('tablas/tabla_1.png')
 ```
 
-Notar que las variables numéricas aparecen con muchos decimales. Una forma sencilla de arreglar esto en {gt} es la siguiente. En este caso, dejando 4 decimales para visualizar la variable instrumentalness:
+Notar que las variables numéricas aparecen con muchos decimales. Una forma sencilla de arreglar esto en {gt} es la siguiente:
 
 ```{r, eval=FALSE}
 tabla %>% 
-  fmt_number(columns = where(is.numeric), decimals=4)
+  fmt_number(columns = where(is.numeric), decimals=2)
 ```
+
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla %>% fmt_number(columns = where(is.numeric), decimals=2), 
+           'tablas/tabla_1b.png', vwidth = 2000, vheight = 3000)
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics('tablas/tabla_1b.png')
+```
+
+
 
 ## 3.2 Tabla a nivel álbumes
 
@@ -186,11 +199,11 @@ tabla_albums <- df_albums %>%
 tabla_albums
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums, 'tablas/tabla_2.png', vwidth = 2000, vheight = 3000)
 ```
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics('tablas/tabla_2.png')
 ```
 
@@ -240,10 +253,12 @@ tabla_albums <- df_albums %>%  select(-album_id) %>%
 tabla_albums %>% cols_hide(all_of(vars_audio))
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums %>% cols_hide(all_of(vars_audio)), 
   'tablas/tabla_3.png', vwidth = 2000, vheight = 3000)
+```
 
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 knitr::include_graphics('tablas/tabla_3.png')
 ```
 
@@ -254,21 +269,25 @@ tabla_albums <- tabla_albums %>%
 
   gt_merge_stack(
     col1 = album_name, 
-    col2 = artist_name) 
+    col2 = artist_name
+  ) 
 ```
 
 ```{r, eval=FALSE}
 tabla_albums %>% cols_hide(all_of(vars_audio)) 
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums %>% cols_hide(all_of(vars_audio)), 
   'tablas/tabla_4.png', vwidth = 2000, vheight = 3000)
+```
 
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 knitr::include_graphics('tablas/tabla_4.png')
 ```
 
-Para visualizar las variables de audio, se utilizarán algunas funcionalidades del paquete {gtExtras} 📦:
+Para visualizar las variables de audio, se utilizarán algunas funcionalidades del paquete **{gtExtras}** 📦:
 
 ```{r}
 tabla_albums <- tabla_albums %>% 
@@ -299,14 +318,17 @@ tabla_albums <- tabla_albums %>%
 tabla_albums %>% cols_hide('instrumentalness')
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums %>% cols_hide('instrumentalness'),
   'tablas/tabla_5.png', vwidth = 2000, vheight = 3000)
+```
 
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 knitr::include_graphics('tablas/tabla_5.png')
 ```
 
-## 3.4 GGplot en gt
+## 3.4 Ggplot en gt
 
 Notar que si se agregara el boxplot para el caso de la variable instrumentalness, se observa, para todos los álbumes, distribuciones con valores atípicos:
 
@@ -321,6 +343,7 @@ Por esta razón, se utilizará el caso de esta variable para explicar cómo se p
 
 ```{r}
 gen_outliers_plots<- function(.df, .variable, .font_size=22, .lwd=3){
+  
   temp <- .df %>% 
     select(all_of(c('track_name',.variable))) %>% 
     pivot_longer(cols=-track_name) 
@@ -330,12 +353,15 @@ gen_outliers_plots<- function(.df, .variable, .font_size=22, .lwd=3){
     pull(track_name)
   
   temp %>% 
-    mutate(is_outlier=ifelse(track_name==track, track_name, NA)) %>% 
+    mutate(
+      is_outlier=ifelse(track_name==track, track_name, NA)
+    ) %>% 
+    
     ggplot(aes(y=value, x=name)) + 
     geom_boxplot(
       fill=color_spotify, width=0.2, lwd=.lwd, outlier.size=5
     ) + 
-    ggrepel::geom_text_repel(aes(label=is_outlier), 
+    geom_text_repel(aes(label=is_outlier), 
       na.rm=TRUE, nudge_x=0.4, size=.font_size)+
     coord_flip()+
     theme_void()
@@ -384,10 +410,13 @@ tabla_albums <- tabla_albums %>%
 tabla_albums
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums,
   'tablas/tabla_6.png', vwidth = 2000, vheight = 3000)
+```
 
+
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 knitr::include_graphics('tablas/tabla_6.png')
 ```
 
@@ -428,10 +457,12 @@ tabla_albums <- tabla_albums %>%
 tabla_albums
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums,
   'tablas/tabla_7.png', vwidth = 2000, vheight = 3000)
+```
 
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 knitr::include_graphics('tablas/tabla_7.png')
 ```
 
@@ -464,161 +495,11 @@ tabla_albums <- tabla_albums %>%
 tabla_albums
 ```
 
-```{r, eval=TRUE, echo=FALSE, layout='l-page'}
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
 gt::gtsave(tabla_albums, 'tablas/tabla_8.png', 
            vwidth = 2000, vheight = 3000)
+```
 
+```{r, eval=TRUE, echo=FALSE, layout='l-page'}
 knitr::include_graphics('tablas/tabla_8.png')
-```
-
-```{r}
-knitr::knit_exit()
-```
-
-# Tendencias
-
-Se utiliza la API de Google trends para obtener la evolución de las búsquedas realizadas para un álbum:
-
-```{r}
-ALBUM = 'LAS QUE NO IBAN A SALIR'
-RELEASE_DATE = '2020-05-10'
-
-trends <- gtrends(
-  keyword = paste0(ARTISTA, ' ', tolower(ALBUM)),
-  geo = "",
-  time = "all"
-)
-
-```
-
-Visualmente:
-
-```{r}
-trends %>%
-  .$interest_over_time %>% 
-  mutate(hits = ifelse(str_detect(hits, "<"),0,hits)) %>% 
-  mutate(hits = as.numeric(hits)) %>% 
-  ggplot(aes(x = date, y = hits)) +
-  geom_line(colour = "darkblue", size = 0.7) +
-  facet_wrap(~keyword) +
-  theme_minimal()
-```
-
-Se genera una función para realizar este gráfico:
-
-```{r}
-gen_trend_ggplot <- function(.album, .artista, .release_date) {
-  if (tolower(.album) == tolower(.artista)) {
-    .album = 'self titled'
-  }
-  
-  gtrends(
-    keyword = paste0(.artista, ' ', .album),
-    geo = "",
-    time = "today+5-y"
-  ) %>%
-    .$interest_over_time %>%
-    mutate(hits = ifelse(str_detect(hits, "<"), 0, hits)) %>%
-    mutate(hits = as.numeric(hits)) %>%
-    ggplot(aes(x = date, y = hits)) +
-    geom_line(color = "darkblue", size = 1) +
-    geom_vline(xintercept = as.POSIXct(.release_date),
-               color = 'red') +
-    annotate(
-      geom = 'text',
-      x = as.POSIXct(.release_date) - lubridate::days(500),
-      y = 90,
-      size = 6,
-      label = paste0('Publicación'),
-      color = 'red'
-    ) +
-    geom_curve(
-      aes(
-        x = as.POSIXct(.release_date) - lubridate::days(500) ,
-        y = 85,
-        xend = as.POSIXct(.release_date),
-        yend = 75
-      ),
-      curvature = 0.3,
-      angle = 40,
-      color = 'red',
-      size = 1,
-      arrow = arrow(length = unit(0.3, "cm"))
-    ) +
-    labs(x = '', y = '%') +
-    theme_minimal() +
-    theme(axis.text = element_text(size = 14),
-          title = element_text(size = 16))
-}
-
-```
-
-```{r}
-p <- gen_trend_ggplot(.album = ALBUM,
-                 .artista = ARTISTA,
-                 .release_date = RELEASE_DATE)
-
-p 
-```
-
-# Tabla con ggplots
-
-Se aplica esta función sobre los álbumes de la tabla:
-
-```{r, eval=FALSE}
-tabla_plots <- tabla_album %>%  
-  
-  # Seleccionando los 5 álbumes más recientes, para no hacer tantas consultas a la API (podría dar error):
-  arrange(desc(album_release_date)) %>% 
-  
-  head(5) %>% 
-  
-  mutate(evolucion = map2(
-    album_name, album_release_date,
-    ~gen_trend_ggplot(.album =.x, 
-                      .artista=ARTISTA, 
-                      .release_date=.y)))
-  
-
-```
-
-Visualizando la tabla final:
-
-```{r, eval=FALSE}
-tabla_final <- tabla_plots %>% 
-  
- gt() %>% 
-  
-  text_transform(
-    locations = cells_body(columns = c(album_images)),
-    fn = function(album_images) {
-      lapply(album_images, web_image, height = 50)
-    }
-  ) %>%
-  
-  cols_label(album_images = '') %>% 
-    
-  # Ggplots en formato gráfico (sino aparecen como texto)
-  text_transform(
-    locations = cells_body(columns = evolucion),
-    fn = function(x) {
-      map(
-        tabla_plots$evolucion,
-        gt::ggplot_image,
-        height = px(180),
-        aspect_ratio = 2
-      )
-    }
-  ) %>% 
-  
-  fmt_number(columns=where(is.numeric))
-```
-
-```{r, eval=FALSE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_final, 'tabla_final.png', 
-           vwidth = 2000, vheight = 3000)
-```
-
-```{r}
-knitr::include_graphics('tabla_final.png')
 ```
