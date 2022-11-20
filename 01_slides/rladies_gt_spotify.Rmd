@@ -30,11 +30,11 @@ options(servr.daemon = TRUE) # para infinite moon reader
 ```
 
 
-```{r include=FALSE}
+```{r echo=FALSE}
 xaringanExtra::use_panelset()
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE}
 xaringanExtra::use_logo(
   image_url = 'https://raw.githubusercontent.com/karbartolome/rladies_charlas/main/01_r_python/02_slides/images/github.png', 
   link_url  = 'https://github.com/karbartolome/gt-spotify', 
