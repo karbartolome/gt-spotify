@@ -27,16 +27,23 @@ knitr::opts_chunk$set(comment = NA)
 options(scipen=999)
 options(reticulate.repl.quiet = TRUE)
 options(servr.daemon = TRUE) # para infinite moon reader
+```
 
+
+```{r include=FALSE}
 xaringanExtra::use_panelset()
+```
 
+```{r include=FALSE}
 xaringanExtra::use_logo(
-  image_url = 'images/github.png', 
+  image_url = 'https://raw.githubusercontent.com/karbartolome/rladies_charlas/main/01_r_python/02_slides/images/github.png', 
   link_url  = 'https://github.com/karbartolome/gt-spotify', 
   width     = '30px', 
   height    = '30px'
 )
+```
 
+```{r include=FALSE}
 image_link <- function(image,url,...){
   htmltools::a(
     href=url,
