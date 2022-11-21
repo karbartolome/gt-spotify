@@ -124,11 +124,11 @@ class: left
 ```{r, out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('https://rladiesba.netlify.app/author/rladies-buenos-aires/avatar_huae50964fd4ece6c135015c99a5e9a56e_144270_270x270_fill_lanczos_center_2.png')
 ```
-[`r fontawesome::fa("globe", a11y = "sem", fill = "#FFFFFF")`rladiesba.netlify.app](https://rladiesba.netlify.app/)
-[`r fontawesome::fa("github", a11y = "sem", fill = "#FFFFFF")`GitHub](https://github.com/RLadies-BA)
-[`r fontawesome::fa("twitter", a11y = "sem", fill = "#FFFFFF")` @RLadiesBA](https://twitter.com/RLadiesBA)
-[`r fontawesome::fa("instagram", a11y = "sem", fill = "#FFFFFF")`@RLadiesBA](https://www.instagram.com/rladiesba/)
-[`r fontawesome::fa("meetup", a11y = "sem", fill = "#FFFFFF")`](https://www.meetup.com/es/rladies-buenos-aires/)
+[`r fontawesome::fa("globe", a11y = "sem", fill = "#562457")` rladiesba.netlify.app](https://rladiesba.netlify.app/) 
+[`r fontawesome::fa("meetup", a11y = "sem", fill = "#562457")` meetup.com](https://www.meetup.com/es/rladies-buenos-aires/)
+[`r fontawesome::fa("github", a11y = "sem", fill = "#562457")` GitHub](https://github.com/RLadies-BA)
+[`r fontawesome::fa("twitter", a11y = "sem", fill = "#562457")` @RLadiesBA](https://twitter.com/RLadiesBA)
+[`r fontawesome::fa("instagram", a11y = "sem", fill = "#562457")` RLadiesBA](https://www.instagram.com/rladiesba/)
 
 
 ]
@@ -151,16 +151,16 @@ knitr::include_graphics('https://www.r-consortium.org/wp-content/uploads/sites/1
 
 ## RLadies Buenos Aires - organizadoras
 
-```{r, out.width='70%', fig.align='center', echo=FALSE}
+```{r, out.width='90%', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/rladiesba.png')
 ```
 
 
 
 ---
-class: center, middle, big-font, inverse
+class: center, middle, big-font
 
-```{r, out.width='70%', fig.align='center', echo=FALSE}
+```{r, out.width='100%', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/meetup.png')
 ```
 
@@ -171,7 +171,6 @@ class: left, middle
 
 
 .pull-left[
-<br>
 <br>
 
 ```{r, out.width='50%', fig.align='center', echo=FALSE}
@@ -354,7 +353,7 @@ access_token <- get_spotify_access_token()
 
 Consulta de los N artistas que más escuchaste en el corto plazo:
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 N = 1
 
 df_artistas <- get_my_top_artists_or_tracks(
@@ -384,7 +383,7 @@ knitr::include_graphics('images/gt_meme.jpg')
 
 
 ---
-
+<br>
 The grammar of tables (gt) se basa en la siguiente estructura: 
 
 ```{r, fig.align='center', echo=FALSE, fig.cap='Estructura de tablas gt, fuente: https://gt.rstudio.com'}
@@ -404,7 +403,7 @@ knitr::include_graphics('https://karbartolome-blog.netlify.app/posts/tablas-subt
 
 class: center, inverse, middle, big-font
 
-# Bad Bunny 🐰
+# Bad Bunny 
 
 ---
 
