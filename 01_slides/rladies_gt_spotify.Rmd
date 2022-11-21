@@ -343,7 +343,7 @@ Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
 Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
 ```
 
-```{r, code_folding=TRUE}
+```{r, eval=FALSE, code_folding=TRUE}
 access_token <- get_spotify_access_token()
 ```
 
@@ -366,7 +366,7 @@ df_artistas <- get_my_top_artists_or_tracks(
 ```
 
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 df_artistas %>% 
   head() 
 ```
