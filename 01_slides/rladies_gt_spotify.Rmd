@@ -111,13 +111,7 @@ knitr::include_graphics('images/rladiesglobal.png')
 ```
 ]
 
----
 
-## RLadies Buenos Aires
-
-```{r, out.width='70%', fig.align='center', echo=FALSE}
-knitr::include_graphics('images/rladiesba.png')
-```
 
 
 ---
@@ -130,6 +124,12 @@ class: left
 ```{r, out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('https://rladiesba.netlify.app/author/rladies-buenos-aires/avatar_huae50964fd4ece6c135015c99a5e9a56e_144270_270x270_fill_lanczos_center_2.png')
 ```
+[`r fontawesome::fa("globe", a11y = "sem", fill = "#FFFFFF")`rladiesba.netlify.app](https://rladiesba.netlify.app/)
+[`r fontawesome::fa("github", a11y = "sem", fill = "#FFFFFF")`GitHub](https://github.com/RLadies-BA)
+[`r fontawesome::fa("twitter", a11y = "sem", fill = "#FFFFFF")` @RLadiesBA](https://twitter.com/RLadiesBA)
+[`r fontawesome::fa("instagram", a11y = "sem", fill = "#FFFFFF")`@RLadiesBA](https://www.instagram.com/rladiesba/)
+[`r fontawesome::fa("meetup", a11y = "sem", fill = "#FFFFFF")`](https://www.meetup.com/es/rladies-buenos-aires/)
+
 
 ]
 
@@ -147,12 +147,21 @@ knitr::include_graphics('https://www.r-consortium.org/wp-content/uploads/sites/1
 ```
 
 ]
+---
+
+## RLadies Buenos Aires - organizadoras
+
+```{r, out.width='70%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/rladiesba.png')
+```
+
+
 
 ---
 class: center, middle, big-font, inverse
 
 ```{r, out.width='70%', fig.align='center', echo=FALSE}
-knitr::include_graphics('https://www.meetup.com/_next/image/?url=https%3A%2F%2Fsecure-content.meetupstatic.com%2Fimages%2Fclassic-events%2F508618435%2F676x380.webp&w=1920&q=75')
+knitr::include_graphics('images/meetup.png')
 ```
 
 ---
@@ -165,7 +174,7 @@ class: left, middle
 <br>
 <br>
 
-```{r, out.width='35%', fig.align='center', echo=FALSE}
+```{r, out.width='50%', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/imagen1.PNG')
 ```
 ]
@@ -328,7 +337,7 @@ Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2Z
 Se utiliza la función **get_spotify_access_token()** de {spotifyr} 📦 para autenticarse con las credenciales:
 
 ```{r, echo=FALSE}
-credentials <- fromJSON(file = here::here("02_caso_spotify/credentials.json"))
+  credentials <- fromJSON(file = here::here("02_caso_spotify/credentials.json"))
 
 Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
 Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
@@ -599,14 +608,22 @@ class: inverse, center, middle
 
 # Contacto
 
+.pull-left[
 
 <a href="https://karbartolome-blog.netlify.com"><i class="fa fa-link fa-fw"></i>&nbsp; karbartolome-blog.netlify.com</a><br>
 <a href="http://twitter.com/karbartolome"><i class="fa fa-twitter fa-fw"></i>&nbsp; @karbartolome</a><br>
 <a href="http://github.com/karbartolome"><i class="fa fa-github fa-fw"></i>&nbsp; @karbartolome</a><br>
 
+]
+
+.pull-right[
+
 <a href="https://soyandrea.netlify.app"><i class="fa fa-link fa-fw"></i>&nbsp; Soyandrea.netlify.app</a><br>
 <a href="http://twitter.com/me_andre"><i class="fa fa-twitter fa-fw"></i>&nbsp; @me_andre</a><br>
 <a href="http://github.com/SoyAndrea"><i class="fa fa-github fa-fw"></i>&nbsp; @SoyAndrea</a><br>
+
+]
+
 
 ---
 
