@@ -2,16 +2,17 @@ library(tidyverse) # Manipulación de datos
 library(gt)        # Tablas gt: grammar of tables
 library(gtExtras)  # Extras de tablas gt
 library(spotifyr)  # API de spotify
-library(rjson)
+library(rjson)     # Trabajar con archivos json
+library(ggrepel)   # Texto en ggplots
 
 color_spotify = "#1DB954"
 
-credentials <- fromJSON(file = "credentials.json")
-
-Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
-Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
-
-access_token <- get_spotify_access_token()
+# credentials <- fromJSON(file = "credentials.json")
+# 
+# Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
+# Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
+# 
+# access_token <- get_spotify_access_token()
 
 
 get_imagen = function(album_images){
@@ -246,13 +247,13 @@ gen_tabla_artista <- function(
 }
 
 
-df = gen_data_artista(.artista='madonna')
-
-tabla <- gen_tabla_artista(
-  .df=df, 
-  .head=5)
-
-
-tabla
+# df = gen_data_artista(.artista='soda stereo')
+# 
+# tabla <- gen_tabla_artista(
+#   .df=df,
+#   .head=5)
+# 
+# 
+# tabla
 
 

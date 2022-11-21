@@ -192,15 +192,15 @@ class: left, middle
 
 --
 
-- Ganas de hacer tablas 
+🔸  Ganas de hacer tablas 
 
 --
 
-- Una cuenta en <a><i class="fa fa-spotify fa-fw"></i> Spotify</a>
+🔸  Una cuenta en <a><i class="fa fa-spotify fa-fw"></i> Spotify</a>
 
 --
   
-- <a><i class="fa fa-registered fa-fw"></i></a> y RStudio instalados, con los siguientes paquetes:
+🔸  <a><i class="fa fa-registered fa-fw"></i></a> y RStudio instalados, con los siguientes paquetes:
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE}
 library(tidyverse) # Manipulación de datos
@@ -304,9 +304,9 @@ Para más información, visitar la <a href="https://developer.spotify.com/docume
 
 ## <a><i class="fa fa-spotify"></i>&nbsp; Credenciales de Spotify</a><br> 
 
-Para obtener credenciales que permitan consultar datos desde la API es necesario ingresar a <a href="https://developer.spotify.com/">**Spotify for developers**</a>
+Para obtener credenciales que permitan consultar datos desde la API es necesario ingresar a <a href="https://developer.spotify.com/">**Spotify for developers**</a>.
 
-Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2ZN5GYlrHkIRl-gGooGEdBm0A/edit">**documento con los pasos detallados para generar tus credenciales**</a>
+Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2ZN5GYlrHkIRl-gGooGEdBm0A/edit">**documento con los pasos detallados para generar tus credenciales**</a>.
 
 ⚠️ Recordá que tus credenciales son personales, no las compartas. ⚠️
 
@@ -384,13 +384,13 @@ class: center, inverse, middle, big-font
 
 ---
 
-Vamos a realizar una búsqueda de datos de Bad Bunny:
+Vamos a realizar una búsqueda de datos de **Bad Bunny** 🐰:
 
 ```{r}
 ARTISTA = 'bad bunny'
 ```
 
-Para este artista, se genera una búsqueda de variables:
+Para este artista, se genera una búsqueda de variables mediante la función **get_artist_audio_features()**:
 
 ```{r, eval=FALSE, code_folding=TRUE}
 vars_audio = c(
@@ -502,6 +502,36 @@ Veamos los detalles en el archivo .Rmd:
 
 ---
 
+# Compartí tu tabla en redes sociales 
+
+
+Dejamos un script: 🔗 [generar_tabla_artista.R](https://github.com/karbartolome/gt-spotify/generar_tabla_artista.R) que permite generar la tabla del .Rmd a partir de una función para un artista específico. 
+
+Si te interesa, 🤩**podes utilizar la función para genrear tu tabla {gt} para tu artista favorito y compartirla en las redes con los hashtags: #RLadiesBA y #RStatsES** 🤩
+
+---
+
+Se cargan las funciones incluidas en el script y se genera la tabla: 
+
+```{r, eval=FALSE, message=FALSE}
+source(here::here('02_caso_spotify/generar_tabla_artista.R'))
+
+df = gen_data_artista(.artista='las ligas menores')
+
+tabla <- gen_tabla_artista(.df=df,.head=5)
+```
+
+```{r, eval=FALSE, echo=FALSE, layout='l-page'}
+gt::gtsave(tabla, here::here('02_caso_spotify/tablas/tabla_otro_artista.png'), 
+           vwidth = 2000, vheight = 3000)
+```
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_otro_artista.png'))
+```
+
+---
+
 class: center, middle
 
 # Comentarios finales
@@ -530,20 +560,13 @@ knitr::include_graphics('https://acegif.com/wp-content/uploads/gifs/spongebob-ra
 
 ---
 
-# Comparte tu tabla en redes sociales 
-
-
-Armar texto
-
----
-
 # Links utiles
 
-- 🔗 [Galería de tablas de RStudio](https://community.rstudio.com/c/table-gallery/64)
-- gt
-- spotifyr
-- link charla jessi
-- [Otro link (:](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
+- 🔗 [Galería de tablas de RStudio](https://community.rstudio.com/c/table-gallery)
+- 🔗 [Documentación de {gt}📦](https://gt.rstudio.com/)
+- 🔗 [Documentación de {spotifyr} 📦](https://www.rcharlie.com/spotifyr/)
+- 🔗 [Intro a Tidyverse | con Jimena Saucedo y María Nanton en el Women in Bioinformatics and Data Science](https://www.youtube.com/watch?v=ycudMihLues&ab_channel=RLadiesBuenosAires)
+- 🔗 [Otro link (:](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
 ---
 
 class: inverse, center, middle
