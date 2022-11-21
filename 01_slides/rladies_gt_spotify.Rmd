@@ -89,7 +89,7 @@ h1, h2, h3 {
 
 ---
 
-## Rladies Global
+## RLadies Global
 
 
 .pull-left[
@@ -156,24 +156,30 @@ knitr::include_graphics('https://www.meetup.com/_next/image/?url=https%3A%2F%2Fs
 ```
 
 ---
+class: left, middle
 
 # ¿Quiénes somos?
 
-```{r, out.width='20%', fig.align='center', echo=FALSE}
-knitr::include_graphics('images/imagen1.PNG')
-```
-
 
 .pull-left[
-### Andrea Gómez Vargas
-- Socióloga
-- Data Analyst en INDEC
-- Fan de Bad Bunny 
+<br>
+<br>
+
+```{r, out.width='35%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/imagen1.PNG')
+```
 ]
 
 
 .pull-right[
+### Andrea Gómez Vargas
+
+- Socióloga
+- Data Analyst en INDEC
+- Fan de Bad Bunny 
+
 ### Karina Bartolomé
+
 - Economista
 - Data Scientist en Ualá 
 - Fan de {gt}
@@ -363,7 +369,7 @@ class: center, big-font, inverse
 
 # Introducción a {gt}
 
-```{r,  fig.align='center', echo=FALSE, out.width='40%'}
+```{r,  fig.align='center', echo=FALSE, out.width='35%'}
 knitr::include_graphics('images/gt_meme.jpg')
 ```
 
@@ -496,6 +502,7 @@ Con **muchas** capas, es posible convertir el df original en la siguiente tabla:
 ```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_8.png'))
 ```
+
 ---
 
 class: center, middle
@@ -511,12 +518,20 @@ Veamos los detalles en el archivo .Rmd:
 
 ---
 
+class: center, middle
+
+```{r, echo=FALSE, out.width='30%', fig.align='center'}
+knitr::include_graphics('images/meme_badbunny.png')
+```
+
+---
+
 # Compartí tu tabla en redes sociales 
 
 
-Dejamos un script: 🔗 [generar_tabla_artista.R](https://github.com/karbartolome/gt-spotify/generar_tabla_artista.R) que permite generar la tabla del .Rmd a partir de una función para un artista específico. 
+Dejamos un script: 🔗 [generar_tabla_artista.R](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/generar_tabla_artista.R) que permite generar la tabla del .Rmd a partir de una función para un artista específico. 
 
-Si te interesa, 🤩**podes utilizar la función para genrear tu tabla {gt} para tu artista favorito y compartirla en las redes con los hashtags: #RLadiesBA y #RStatsES** 🤩
+Si te interesa, 🤩**podes utilizar la función para generar una tabla {gt} sobre tu artista favorito y compartirla en las redes con los hashtags: #RLadiesBA y #RStatsES** 🤩
 
 ---
 
@@ -575,6 +590,8 @@ knitr::include_graphics('https://acegif.com/wp-content/uploads/gifs/spongebob-ra
 - 🔗 [Documentación de {gt}📦](https://gt.rstudio.com/)
 - 🔗 [Documentación de {spotifyr} 📦](https://www.rcharlie.com/spotifyr/)
 - 🔗 [Intro a Tidyverse | con Jimena Saucedo y María Nanton en el Women in Bioinformatics and Data Science](https://www.youtube.com/watch?v=ycudMihLues&ab_channel=RLadiesBuenosAires)
+- 🔗 [Post sobre el uso de gt: Uso del subte en la Ciudad Autónoma de Buenos Aires](https://karbartolome-blog.netlify.app/posts/tablas-subte/)
+
 - 🔗 [Otro link (:](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
 ---
 
