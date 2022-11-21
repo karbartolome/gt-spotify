@@ -113,7 +113,7 @@ knitr::include_graphics('images/rladiesglobal.png')
 
 ---
 
-## Rladies Buenos Aires
+## RLadies Buenos Aires
 
 ```{r, out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('images/rladiesba.png')
@@ -121,9 +121,9 @@ knitr::include_graphics('images/rladiesba.png')
 
 
 ---
+class: left
 
-## Sponsors
-
+## RLadies Buenos Aires
 
 .pull-left[
 
@@ -135,11 +135,14 @@ knitr::include_graphics('https://rladiesba.netlify.app/author/rladies-buenos-air
 
 .pull-right[
 
-```{r, out.width='70%', fig.align='center', echo=FALSE}
+### Sponsors:
+
+
+```{r, out.width='60%', fig.align='left', echo=FALSE}
 knitr::include_graphics('https://guide.rladies.org/images/horizontal-logo.png')
 ```
 
-```{r, out.width='70%', fig.align='center', echo=FALSE}
+```{r, out.width='60%', fig.align='left', echo=FALSE}
 knitr::include_graphics('https://www.r-consortium.org/wp-content/uploads/sites/13/2016/09/RConsortium_Horizontal_Pantone.png')
 ```
 
@@ -308,7 +311,11 @@ Para obtener credenciales que permitan consultar datos desde la API es necesario
 
 Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2ZN5GYlrHkIRl-gGooGEdBm0A/edit">**documento con los pasos detallados para generar tus credenciales**</a>.
 
+--
+
 ⚠️ Recordá que tus credenciales son personales, no las compartas. ⚠️
+
+--
 
 ### Autenticación 
 
@@ -330,13 +337,15 @@ access_token <- get_spotify_access_token()
 
 ## <a><i class="fa fa-spotify"></i>&nbsp; Consulta simple a la API</a><br>   
 
-Consulta de los 2 artistas que más escuchaste en el corto plazo:
+Consulta de los N artistas que más escuchaste en el corto plazo:
 
 ```{r, eval=TRUE}
+N = 1
+
 df_artistas <- get_my_top_artists_or_tracks(
     type = 'artists', 
     time_range = 'short_term', 
-    limit = 2
+    limit = N
   ) %>% 
   select(name, followers.total, genres)
 ```
@@ -532,7 +541,7 @@ knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_otro_artista.pn
 
 ---
 
-class: center, middle
+class: center, middle, inverse, big-font
 
 # Comentarios finales
 
