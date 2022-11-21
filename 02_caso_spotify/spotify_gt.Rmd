@@ -360,7 +360,7 @@ tabla_albums <- tabla_albums %>%
 ```
 
 ```{r}
-tabla_album
+tabla_albums
 ```
 
 ## Formato
@@ -375,7 +375,7 @@ tabla_albums <- tabla_albums %>%
   
   gt::tab_footnote(
     locations=cells_column_labels('duration_mins'), 
-    footnote='Duraciòn en minutos = suma de la duración de cada una de las canciones que componen el álbum.') %>% 
+    footnote='Duración en minutos = suma de la duración de cada una de las canciones que componen el álbum.') %>% 
   
   gt::tab_footnote(
     locations=cells_column_labels('instrumentalness'), 
@@ -423,7 +423,6 @@ my_theme <- function(gt_object, ...){
 ```{r}
 tabla_albums <- tabla_albums %>% 
     my_theme()
-
 ```
 
 ```{r}

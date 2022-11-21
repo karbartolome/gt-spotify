@@ -7,12 +7,10 @@ library(ggrepel)   # Texto en ggplots
 
 color_spotify = "#1DB954"
 
-# credentials <- fromJSON(file = "credentials.json")
-# 
-# Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
-# Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
-# 
-# access_token <- get_spotify_access_token()
+vars_audio = c(
+  'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
+)
+
 
 
 get_imagen = function(album_images){
@@ -74,19 +72,7 @@ gen_outliers_plots<- function(.df, .variable, .font_size=22){
 }
 
 
-gen_data_artista <- function(.artista){
-  
-  vars_audio = c(
-    'danceability',
-    'energy',
-    'loudness',
-    # 'liveness'
-    # 'speechiness', 
-    'acousticness', 
-    'instrumentalness'
-    # 'valence', 
-    # 'tempo'       
-  )
+gen_data_artista <- function(.artista, .vars_audio=vars_audio){
   
   tracks_features <- get_artist_audio_features(artist = .artista) %>%
     select(
@@ -102,7 +88,7 @@ gen_data_artista <- function(.artista){
       key_mode,
       
       # Variables vinculadas a la canción
-      all_of(vars_audio)       
+      all_of(.vars_audio)       
     ) %>% 
     
     arrange(desc(album_release_date))
@@ -111,7 +97,7 @@ gen_data_artista <- function(.artista){
 }
   
 gen_tabla_artista <- function(
-    .df, .albums=NULL, .head=NULL){
+    .df, .vars_audio=vars_audio, .albums=NULL, .head=NULL){
   
   df_processed <- .df %>%
     
@@ -121,7 +107,7 @@ gen_tabla_artista <- function(
     
     summarise(
       duration_mins = sum(duration_ms/(1000*60)),
-      across(all_of(vars_audio), ~ list(.x)),
+      across(all_of(.vars_audio), ~ list(.x)),
     ) %>% 
     
     ungroup() %>% 
@@ -220,7 +206,7 @@ gen_tabla_artista <- function(
                       columns = c('acousticness','instrumentalness')) %>% 
       gt::tab_footnote(
         locations=cells_column_labels('duration_mins'),
-        footnote='Duraciòn en minutos = suma de la duración de cada una de las canciones que componen el álbum.') %>%
+        footnote='Duración en minutos = suma de la duración de cada una de las canciones que componen el álbum.') %>%
 
       gt::tab_footnote(
         locations=cells_column_labels('instrumentalness'),
@@ -247,13 +233,22 @@ gen_tabla_artista <- function(
 }
 
 
-# df = gen_data_artista(.artista='soda stereo')
-# 
-# tabla <- gen_tabla_artista(
-#   .df=df,
-#   .head=5)
-# 
-# 
-# tabla
+
+credentials <- fromJSON(file = "credentials.json")
+
+Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
+
+access_token <- get_spotify_access_token()
+
+
+df = gen_data_artista(.artista='bad bunny')
+
+tabla <- gen_tabla_artista(
+  .df=df,
+  .head=5)
+
+
+tabla
 
 
