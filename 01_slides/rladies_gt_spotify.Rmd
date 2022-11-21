@@ -405,6 +405,12 @@ class: center, inverse, middle, big-font
 
 # Bad Bunny 
 
+
+```{r, echo=FALSE, out.width='50%', fig.align='center'}
+knitr::include_graphics("https://64.media.tumblr.com/1623e4fc39e004a212029bb36513b310/b693e0e3d8bdd649-95/s540x810/3461e29ed079728927adec76cfb37f3463cc56f5.gifv")
+```
+
+
 ---
 
 Vamos a realizar una búsqueda de datos de **Bad Bunny** 🐰:
@@ -516,6 +522,15 @@ knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_8.png'))
 class: center, middle
 
 ```{r, echo=FALSE, out.width='30%', fig.align='center'}
+knitr::include_graphics('images/meme_badbunny.png')
+```
+
+
+---
+
+class: center, middle
+
+```{r, echo=FALSE, out.width='30%', fig.align='center'}
 knitr::include_graphics('https://i.pinimg.com/564x/9a/54/17/9a541707e8b87607f25091fbc4538598.jpg')
 ```
 
@@ -524,13 +539,6 @@ Veamos los detalles en el archivo .Rmd:
 
 🔗 [Generando tablas de Bad Bunny a partir de datos de Spotify](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt.Rmd)
 
----
-
-class: center, middle
-
-```{r, echo=FALSE, out.width='30%', fig.align='center'}
-knitr::include_graphics('images/meme_badbunny.png')
-```
 
 ---
 
@@ -633,5 +641,12 @@ class: center, middle, big-font, inverse
 
 Las slides fueron creadas con el paquete [**xaringan**](https://github.com/yihui/xaringan), utilizando el template de Rladies
 
+
+---
+<br>
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('https://gifdb.com/images/thumbnail/bad-bunny-eating-popcorn-mi03a75ps5zxfv72.gif')
+```
 
 
