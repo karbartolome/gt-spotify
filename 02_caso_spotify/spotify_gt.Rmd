@@ -6,14 +6,16 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
-                      eval = TRUE,
-                      warning = FALSE, 
-                      message = FALSE, 
-                      code_folding=TRUE,
-                      align='center')
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  code_folding = TRUE,
+  align = 'center'
+)
 
-options(scipen=999)
+options(scipen = 999)
 
 color_spotify = "#1DB954"
 ```
@@ -70,9 +72,10 @@ Para verificar que la autenticación haya sido exitosa, se realiza una consulta 
 
 ```{r, eval=FALSE}
 tabla_user <- get_my_top_artists_or_tracks(
-    type = 'artists', 
-    time_range = 'short_term', #'short_term', # 'medium_term', 'long_term' 
-    limit = 5) %>%
+                type = 'artists',
+                time_range = 'short_term', # 'medium_term', 'long_term'
+                limit = 5
+              ) %>%
   select(name, genres) %>%
   rowwise() %>%
   mutate(genres = paste(genres, collapse = ', ')) %>%
@@ -91,21 +94,29 @@ ARTISTA = 'bad bunny'
 La función **get_artist_audio_features()** del paquete {**spotifyr**} 📦 permite generar una búsqueda de variables vinculadas al audio de cada track.
 
 ```{r}
-vars_audio = c(
-  'danceability', 'energy', 'loudness', 'acousticness', 'instrumentalness'
-)
+vars_audio = c('danceability',
+               'energy',
+               'loudness',
+               'acousticness',
+               'instrumentalness')
 ```
 
 ```{r, eval=FALSE}
 tracks_features <- get_artist_audio_features(artist = ARTISTA) %>%
   
   select(
-    artist_id, artist_name, album_id, album_name,
-    album_release_date, album_images, track_name, duration_ms,
-
+    artist_id,
+    artist_name,
+    album_id,
+    album_name,
+    album_release_date,
+    album_images,
+    track_name,
+    duration_ms,
+    
     # Variables vinculadas al audio:
-    all_of(vars_audio)       
-  ) %>% 
+    all_of(vars_audio)
+  ) %>%
   
   arrange(desc(album_release_date))
 ```
@@ -122,20 +133,19 @@ tracks_features <- readRDS('tracks_features.rds')
 Se cuenta con un df de variables vinculadas a cada canción de cada álbum del artista seleccionado:
 
 ```{r}
-tracks_features %>% 
+tracks_features %>%
   glimpse()
 ```
 
 ## 3.1 Intro a gt
 
 ```{r}
-tabla <- tracks_features %>% 
-  head() %>% 
-  select(artist_name, album_name, track_name, all_of(vars_audio)) %>% 
+tabla <- tracks_features %>%
+  head() %>%
+  select(artist_name, album_name, track_name, all_of(vars_audio)) %>%
   
   # En este paso se transforma el df en un objeto gt:
   gt()
-
 ```
 
 ```{r}
@@ -145,8 +155,8 @@ tabla
 Notar que las variables numéricas aparecen con muchos decimales. Una forma sencilla de arreglar esto en {gt} es la siguiente:
 
 ```{r, eval=FALSE}
-tabla %>% 
-  fmt_number(columns = where(is.numeric), decimals=2)
+tabla %>%
+  fmt_number(columns = where(is.numeric), decimals = 2)
 ```
 
 ## 3.2 Tabla a nivel álbumes
@@ -156,26 +166,25 @@ Se agregan los datos a nivel de cada álbum. Notar que, en el caso de las variab
 ```{r}
 df_albums <- tracks_features %>%
   
-  group_by(
-    album_images, artist_name, album_id, album_name, album_release_date
-  ) %>%
+  group_by(album_images,
+           artist_name,
+           album_id,
+           album_name,
+           album_release_date) %>%
   
-  summarise(
-    # Duración del álbum: suma de duración de cada canción
-    duration_mins = sum(duration_ms/(1000*60)),
+  summarise(# Duración del álbum: suma de duración de cada canción
+    duration_mins = sum(duration_ms / (1000 * 60)),
     
     # Lista de cada variable de audio
-    across(all_of(vars_audio), ~ list(.x)),
-  ) %>% 
+    across(all_of(vars_audio), ~ list(.x)),) %>%
   
   ungroup()
 ```
 
 ```{r}
-tabla_albums <- df_albums %>% 
-  select(-album_images) %>% 
+tabla_albums <- df_albums %>%
+  select(-album_images) %>%
   gt() 
-
 ```
 
 ```{r}
@@ -187,11 +196,11 @@ tabla_albums
 Se quiere añadir la imagen del álbum. Para ello, se construye la siguiente función. Para cada álbum se cuenta con distintos tamaños de imágenes, donde cada imagen se encuentra representada por un url. Se decide seleccionar la imagen de tamaño=64, extrayendo el url:
 
 ```{r}
-get_imagen = function(album_images){
-  album_images %>% 
-    data.frame() %>% 
-    filter(height==64) %>% 
-    pull(url) %>% 
+get_imagen = function(album_images) {
+  album_images %>%
+    data.frame() %>%
+    filter(height == 64) %>%
+    pull(url) %>%
     as.character()
 }
 ```
@@ -199,22 +208,20 @@ get_imagen = function(album_images){
 Se aplica la función al dataframe. Para ello, se utiliza la función **map()** del paquete {purrr} 📦:
 
 ```{r}
-df_albums <- df_albums %>% 
-  mutate(album_images = map(album_images, ~get_imagen(album_images=.x))) %>% 
+df_albums <- df_albums %>%
+  mutate(album_images = map(album_images, ~ get_imagen(album_images = .x))) %>%
   distinct()
 ```
 
 Para visualizar los urls como imagenes, se utiliza la función **text_transform()** de {gt}. Además, la función **tab_header()** permite añadir título y subtítulo.
 
 ```{r}
-tabla_albums <- df_albums %>%  select(-album_id) %>% 
-
-  gt() %>% 
+tabla_albums <- df_albums %>%  select(-album_id) %>%
   
-  tab_header(
-    title = md(glue::glue('**{str_to_title(ARTISTA)}** en Spotify')),
-    subtitle = 'Álbumes más recientes'
-  ) %>% 
+  gt() %>%
+  
+  tab_header(title = md(glue::glue('**{str_to_title(ARTISTA)}** en Spotify')),
+             subtitle = 'Álbumes más recientes') %>%
   
   text_transform(
     locations = cells_body(columns = c(album_images)),
@@ -222,23 +229,22 @@ tabla_albums <- df_albums %>%  select(-album_id) %>%
       lapply(album_images, web_image, height = 50)
     }
   ) 
-
 ```
 
+De momento, se ocultan las variables de audio para visualizar la tabla:
+
 ```{r}
-tabla_albums %>% 
+tabla_albums %>%
   cols_hide(all_of(vars_audio))
 ```
 
 Otra función útil para visualizar este tipo de información es **gt_merge_stack()** que permite concatenar dos variables en una única:
 
 ```{r}
-tabla_albums <- tabla_albums %>%  
-
-  gt_merge_stack(
-    col1 = album_name, 
-    col2 = artist_name
-  ) 
+tabla_albums <- tabla_albums %>%
+  
+  gt_merge_stack(col1 = album_name,
+                 col2 = artist_name) 
 ```
 
 ```{r}
@@ -249,33 +255,45 @@ tabla_albums %>%
 Para visualizar las variables de audio, se utilizarán algunas funcionalidades del paquete **{gtExtras}** 📦:
 
 ```{r}
-tabla_albums <- tabla_albums %>% 
+tabla_albums <- tabla_albums %>%
   
-  gt_color_box(columns = duration_mins, 
-               palette=c('white', color_spotify), 
-               domain=c(0,round(max(df_albums$duration_mins))+1)) %>% 
+  gt_color_box(
+    columns = duration_mins,
+    palette = c('white', color_spotify),
+    domain = c(0, round(max(df_albums$duration_mins)) + 1)
+  ) %>%
   
-  gt_plt_dist(column = danceability, 
-              type = "density", line_color = "black", 
-              fill_color = color_spotify) %>% 
+  gt_plt_dist(
+    column = danceability,
+    type = "density",
+    line_color = "black",
+    fill_color = color_spotify
+  ) %>%
   
-  gt_plt_dist(column = energy, 
-              type = "density", line_color = "black", 
-              fill_color = color_spotify) %>% 
+  gt_plt_dist(
+    column = energy,
+    type = "density",
+    line_color = "black",
+    fill_color = color_spotify
+  ) %>%
   
-  gt_plt_dist(column = loudness,
-              type = "density", line_color = "black", 
-              fill_color = color_spotify) %>% 
+  gt_plt_dist(
+    column = loudness,
+    type = "density",
+    line_color = "black",
+    fill_color = color_spotify
+  ) %>%
   
-  gt_plt_dist(column = acousticness,
-              type = "boxplot", line_color = "black", 
-              fill_color = color_spotify)
-
-
+  gt_plt_dist(
+    column = acousticness,
+    type = "boxplot",
+    line_color = "black",
+    fill_color = color_spotify
+  )
 ```
 
 ```{r}
-tabla_albums %>% 
+tabla_albums %>%
   cols_hide('instrumentalness')
 ```
 
@@ -285,36 +303,46 @@ Notar que si se agregara el boxplot para el caso de la variable instrumentalness
 
 ```{r, eval=FALSE}
 tabla_albums %>%
-  gt_plt_dist(column = instrumentalness,
-              type = "boxplot", line_color = "black", 
-              fill_color = color_spotify) 
+  gt_plt_dist(
+    column = instrumentalness,
+    type = "boxplot",
+    line_color = "black",
+    fill_color = color_spotify
+  ) 
 ```
 
 Por esta razón, se utilizará el caso de esta variable para explicar cómo se podría identificar a estos valores atípicos mediante el uso de {ggplot2} 📦
 
 ```{r}
-gen_outliers_plots<- function(.df, .variable, .font_size=22, .lwd=3){
+gen_outliers_plots <- function(.df,
+                               .variable,
+                               .font_size = 22,
+                               .lwd = 3) {
+  temp <- .df %>%
+    select(all_of(c('track_name', .variable))) %>%
+    pivot_longer(cols = -track_name)
   
-  temp <- .df %>% 
-    select(all_of(c('track_name',.variable))) %>% 
-    pivot_longer(cols=-track_name) 
-  
-  track <- temp %>% 
-    slice(which.max(value)) %>% 
+  track <- temp %>%
+    slice(which.max(value)) %>%
     pull(track_name)
   
-  temp %>% 
-    mutate(
-      is_outlier=ifelse(track_name==track, track_name, NA)
-    ) %>% 
+  temp %>%
+    mutate(is_outlier = ifelse(track_name == track, track_name, NA)) %>%
     
-    ggplot(aes(y=value, x=name)) + 
+    ggplot(aes(y = value, x = name)) +
     geom_boxplot(
-      fill=color_spotify, width=0.2, lwd=.lwd, outlier.size=5
-    ) + 
-    geom_text_repel(aes(label=is_outlier), 
-      na.rm=TRUE, nudge_x=0.4, size=.font_size)+
-    coord_flip()+
+      fill = color_spotify,
+      width = 0.2,
+      lwd = .lwd,
+      outlier.size = 5
+    ) +
+    geom_text_repel(
+      aes(label = is_outlier),
+      na.rm = TRUE,
+      nudge_x = 0.4,
+      size = .font_size
+    ) +
+    coord_flip() +
     theme_void()
 }
 ```
@@ -323,28 +351,30 @@ Realizando la prueba de la función, se observa el gráfico que genera:
 
 ```{r}
 gen_outliers_plots(
-  .df=tracks_features %>% filter(album_name=='X 100PRE'), 
-  .variable='instrumentalness', .font_size=10, .lwd = 0.5)
+  .df = tracks_features %>% filter(album_name == 'X 100PRE'),
+  .variable = 'instrumentalness',
+  .font_size = 10,
+  .lwd = 0.5
+)
 ```
 
 Ahora se incluyen estos plots en la tabla. Primero, se mappea la función al df:
 
 ```{r}
-df_albums <- df_albums %>% 
-  mutate(instrumentalness=map(
-    album_id, ~gen_outliers_plots(
-      .df=tracks_features %>% filter(album_id==.x), 
-      .variable='instrumentalness'
-    )
+df_albums <- df_albums %>%
+  mutate(instrumentalness = map(
+    album_id,
+    ~ gen_outliers_plots(.df = tracks_features %>% filter(album_id == .x),
+                         .variable = 'instrumentalness')
   ))
 ```
 
 Se visualiza la tabla completa:
 
 ```{r}
-tabla_albums <- tabla_albums %>% 
+tabla_albums <- tabla_albums %>%
   
-    text_transform(
+  text_transform(
     locations = cells_body(columns = instrumentalness),
     fn = function(x) {
       map(
@@ -355,8 +385,6 @@ tabla_albums <- tabla_albums %>%
       )
     }
   ) 
-
-
 ```
 
 ```{r}
@@ -366,22 +394,25 @@ tabla_albums
 ## Formato
 
 ```{r}
-tabla_albums <- tabla_albums %>% 
+tabla_albums <- tabla_albums %>%
   
-  gt::tab_spanner(label='Un tipo de variables', 
-                  columns=danceability:loudness) %>% 
-  gt::tab_spanner(label='Otro tipo de variables', 
-                  columns = c('acousticness','instrumentalness')) %>% 
+  gt::tab_spanner(label = 'Un tipo de variables',
+                  columns = danceability:loudness) %>%
+  gt::tab_spanner(label = 'Otro tipo de variables',
+                  columns = c('acousticness', 'instrumentalness')) %>%
   
-  gt::tab_footnote(
-    locations=cells_column_labels('duration_mins'), 
-    footnote='Duración en minutos = suma de la duración de cada una de las canciones que componen el álbum.') %>% 
+  gt::tab_footnote(locations = cells_column_labels('duration_mins'),
+                   footnote = 'Duración en minutos = suma de la duración de 
+                               cada una de las canciones que componen el álbum.'
+                   ) %>%
   
-  gt::tab_footnote(
-    locations=cells_column_labels('instrumentalness'), 
-    footnote='En el caso de instrumentalness, al existir valores muy atípicos se muestra la canción a la que corresponde el máximo valor en cada álbum.') %>% 
+  gt::tab_footnote(locations = cells_column_labels('instrumentalness'),
+                   footnote = 'En el caso de instrumentalness, al existir 
+                               valores muy atípicos se muestra la canción a la 
+                               que corresponde el máximo valor en cada álbum.'
+                   ) %>%
   
-  gt::tab_source_note(source_note='Fuente: API de Spotify') %>% 
+  gt::tab_source_note(source_note = 'Fuente: API de Spotify') %>%
   
   cols_label(
     album_images = '',
@@ -403,7 +434,7 @@ tabla_albums
 Además, se añade un theme específico para asignarle colores y formatos adicionales:
 
 ```{r}
-my_theme <- function(gt_object, ...){
+my_theme <- function(gt_object, ...) {
   gt_object %>%
     tab_options(
       column_labels.background.color = "#39423c",
@@ -413,16 +444,14 @@ my_theme <- function(gt_object, ...){
       heading.align = "left",
       ...
     ) %>%
-    tab_style(
-      style = cell_text(color = color_spotify, size = px(32)),
-      locations = cells_title("title")
-    )
+    tab_style(style = cell_text(color = color_spotify, size = px(32)),
+              locations = cells_title("title"))
 }
 ```
 
 ```{r}
-tabla_albums <- tabla_albums %>% 
-    my_theme()
+tabla_albums <- tabla_albums %>%
+  my_theme()
 ```
 
 ```{r}
@@ -434,6 +463,8 @@ tabla_albums
 Para guardar la tabla, se utiliza la función **gtsave()** de {gt} 📦:
 
 ```{r, eval=TRUE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla_albums, 'tablas/tabla_8.png', 
-           vwidth = 2000, vheight = 3000)
+gt::gtsave(tabla_albums,
+           'tablas/tabla_8.png',
+           vwidth = 2000,
+           vheight = 3000)
 ```
