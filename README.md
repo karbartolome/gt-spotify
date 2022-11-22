@@ -2,8 +2,11 @@
 
 **Repositorio para el taller de RLadies: Creando tablas en {gt} con Spotify API & Bad Bunny**
 
-Andrea Gomez y Karina Bartolomé
+R-Ladies Buenos Aires
 
+Andrea Gómez Vargas & Karina Bartolomé
+
+2022-11-23
 
 
 ```mermaid
