@@ -1,17 +1,10 @@
 # 💜 Charla RLadies 💜 
 
-## **1. 01_slides/** 👉 [Creando tablas en {gt} con Spotify API & Bad Bunny](https://karbartolome.github.io/gt-spotify/01_slides/rladies_gt_spotify.html)
+**Repositorio para el taller de RLadies: Creando tablas en {gt} con Spotify API & Bad Bunny**
 
- Las slides fueron generadas con {xaringan} 📦. 
+Andrea Gomez y Karina Bartolomé
 
-## **2. 02_caso_spotify**
 
-  - spotify_gt.Rmd
-      [Archivo .Rmd para utilizar en el taller](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt.Rmd)
-      
-  - spotify_gt_rendered.md
-      [Archivo .Rmd renderizado en github para visualizar el paso a paso](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt_rendered.md)
- 
 
 ```mermaid
 flowchart LR
@@ -34,3 +27,17 @@ flowchart LR
     end
 
 ```
+
+
+## **1. 01_slides/** 👉 [Creando tablas en {gt} con Spotify API & Bad Bunny](https://karbartolome.github.io/gt-spotify/01_slides/rladies_gt_spotify.html)
+
+ Las slides fueron generadas con {xaringan} 📦. 
+
+## **2. 02_caso_spotify/**
+
+  - spotify_gt.Rmd
+      [Archivo .Rmd para utilizar en el taller](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt.Rmd)
+      
+  - spotify_gt_rendered.md
+      [Archivo .Rmd renderizado en github para visualizar el paso a paso](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt_rendered.md)
+ 
