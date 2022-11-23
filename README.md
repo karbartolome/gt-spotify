@@ -8,6 +8,8 @@ Andrea Gómez Vargas & Karina Bartolomé
 
 2022-11-23
 
+Se recomienda leer el [Documento de pasos previos antes de seguir el taller](https://github.com/karbartolome/gt-spotify/blob/main/Pasos%20previos%20al%20taller%20gt%20%2B%20spotify.pdf)
+
 
 ```mermaid
 flowchart LR
