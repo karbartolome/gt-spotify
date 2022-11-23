@@ -545,6 +545,8 @@ Veamos los detalles en el archivo .Rmd:
 
 🔗 [Generando tablas de Bad Bunny a partir de datos de Spotify](https://github.com/karbartolome/gt-spotify/blob/main/02_caso_spotify/spotify_gt_rendered.md)
 
+🔗 [Proyecto en RStudio Cloud (ahora Posit)](https://posit.cloud/content/5019119)
+
 
 ---
 
@@ -562,7 +564,7 @@ Se cargan las funciones incluidas en el script y se genera la tabla:
 ```{r, eval=FALSE, message=FALSE}
 source(here::here('02_caso_spotify/generar_tabla_artista.R'))
 
-df = gen_data_artista(.artista='las ligas menores')
+df <- gen_data_artista(.artista='las ligas menores')
 
 tabla <- gen_tabla_artista(.df=df,.head=5)
 ```
