@@ -570,12 +570,12 @@ tabla <- gen_tabla_artista(.df=df,.head=5)
 ```
 
 ```{r, eval=FALSE, echo=FALSE, layout='l-page'}
-gt::gtsave(tabla, here::here('02_caso_spotify/tablas/tabla_otro_artista.png'), 
+gt::gtsave(tabla, here::here('02_caso_spotify/tablas/tabla_lasligasmenores.png'), 
            vwidth = 2000, vheight = 3000)
 ```
 
 ```{r, echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_otro_artista.png'))
+knitr::include_graphics(here::here('02_caso_spotify/tablas/tabla_lasligasmenores.png'))
 ```
 
 ---
