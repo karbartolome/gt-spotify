@@ -342,13 +342,13 @@ Compartimos un <a href="https://docs.google.com/document/d/1GpOBol3E-1hg6AIQyD2Z
 Se utiliza la función **get_spotify_access_token()** de {spotifyr} 📦 para autenticarse con las credenciales:
 
 ```{r, echo=FALSE}
-  credentials <- fromJSON(file = here::here("02_caso_spotify/credentials.json"))
+credentials <- fromJSON(file = here::here("02_caso_spotify/credentials.json"))
 
 Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
 Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
 ```
 
-```{r, eval=FALSE, code_folding=TRUE}
+```{r, eval=TRUE, code_folding=TRUE}
 access_token <- get_spotify_access_token()
 ```
 
@@ -359,7 +359,7 @@ access_token <- get_spotify_access_token()
 
 Consulta de los N artistas que más escuchaste en el corto plazo:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 N = 1
 
 df_artistas <- get_my_top_artists_or_tracks(
@@ -371,7 +371,7 @@ df_artistas <- get_my_top_artists_or_tracks(
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 df_artistas %>% 
   head() 
 ```
