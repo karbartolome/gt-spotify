@@ -80,7 +80,8 @@ gen_outliers_plots <- function(.df, .variable, .font_size = 22) {
       size = .font_size
     ) +
     coord_flip() +
-    theme_void()
+    theme_void()+
+    ylim(0,1)
 }
 
 
@@ -286,7 +287,7 @@ gen_tabla_artista <- function(.df,
 # 
 # access_token <- get_spotify_access_token()
 # 
-# df = gen_data_artista(.artista='las ligas menores')
+# df = gen_data_artista(.artista='santigold')
 # 
 # tabla <- gen_tabla_artista(
 #   .df=df,
@@ -295,5 +296,5 @@ gen_tabla_artista <- function(.df,
 # 
 # tabla
 # 
-# gt::gtsave(tabla, 'tablas/tabla_otro_artista_funcion.png', vwidth = 2000, vheight = 3000)
+# gt::gtsave(tabla, 'tablas/tabla_santigold.png', vwidth = 2000, vheight = 3000)
 # 
