@@ -175,16 +175,13 @@ class: left, middle
 
 # ¿Quiénes somos?
 
-```{r, out.width='15%', fig.align='center', echo=FALSE}
-knitr::include_graphics('images/imagen1.PNG')
-```
 
 .pull-left[
-### Karina Bartolomé
+<br>
 
-- Economista
-- Data Scientist en Ualá 
-- Fan de {gt}
+```{r, out.width='40%', fig.align='center', echo=FALSE}
+knitr::include_graphics('images/imagen1.png')
+```
 ]
 
 
@@ -195,7 +192,11 @@ knitr::include_graphics('images/imagen1.PNG')
 - Data Analyst en INDEC
 - Fan de Bad Bunny 
 
+### Karina Bartolomé
 
+- Economista
+- Data Scientist en Ualá 
+- Fan de {gt}
 ]
 
 ---
@@ -501,7 +502,7 @@ tabla
 
 ---
 
-Siguiendo con la lógica de {gt} 📦 es posible añadir nuevas capas a la tabla. Por ejemplo, se añade título, subtítulo y colore
+Siguiendo con la lógica de {gt} 📦 es posible añadir nuevas capas a la tabla. Por ejemplo, se añade título, subtítulo y colores:
 
 ```{r}
 tabla %>% 
