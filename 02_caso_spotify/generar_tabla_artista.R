@@ -112,8 +112,22 @@ gen_data_artista <- function(.artista, .vars_audio = vars_audio) {
 # Función para generar la tabla -------------------------------------------
 gen_tabla_artista <- function(.df,
                               .vars_audio = vars_audio,
+                              .imagen_path = NULL,
+                              .image_size = 60,
                               .albums = NULL,
                               .head = NULL) {
+  
+  
+  if(is.null(.imagen_path)){
+    .imagen_path <- get_artist(id=df$artist_id %>% unique())$images %>% 
+      filter(height==640) %>% 
+      pull(url)
+  }
+  
+  imagen_artista <- paste0(
+    "<img src='", .imagen_path,"' style='height:",.image_size,"px;'>"
+  )
+  
   df_processed <- .df %>%
     
     group_by(album_images,
@@ -157,7 +171,7 @@ gen_tabla_artista <- function(.df,
   tabla <- df_processed %>% gt() %>%
     
     tab_header(title = md(glue::glue(
-      '**{str_to_title(artista)}** en Spotify'
+      '{imagen_artista} **{str_to_title(artista)}** en Spotify'
     )),
     subtitle = 'Álbumes más recientes') %>%
     
@@ -263,17 +277,20 @@ gen_tabla_artista <- function(.df,
 
 
 
+# imagen_badbunny <- 'https://raw.githubusercontent.com/karbartolome/gt-spotify/main/02_caso_spotify/imagenes/bad_bunny.png'
+# 
 # credentials <- fromJSON(file = "credentials.json")
-#
+# 
 # Sys.setenv(SPOTIFY_CLIENT_ID = credentials$SPOTIFY_CLIENT_ID)
 # Sys.setenv(SPOTIFY_CLIENT_SECRET = credentials$SPOTIFY_CLIENT_SECRET)
-#
+# 
 # access_token <- get_spotify_access_token()
-#
-# df = gen_data_artista(.artista='las ligas menores')
-#
+# 
+# df = gen_data_artista(.artista='bad bunny')
+# 
 # tabla <- gen_tabla_artista(
 #   .df=df,
+#   .imagen_path = NULL,
 #   .head=5)
 # 
 # tabla
